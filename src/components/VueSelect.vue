@@ -1,0 +1,69 @@
+<template>
+  <div class="select__wrapper w-25 mb-3">
+    <div class="input-group">
+      <label class="input-group-text" for="inputGroupSelect01">Выбор работы: </label>
+      <select
+        @change="changeSelect"
+        class="form-select w-25" aria-label="Вид работы"
+        id="inputGroupSelect01"
+      >
+        <option value="false">Работа не выбрана</option>
+        <option
+          v-for="(select, index) in selectList"
+          :value="select.type"
+          :key="index"
+        >{{ select.workName }}</option>
+      </select>
+    </div>
+    <template v-if="currentTypeWork">
+      <vue-modal
+        v-for="(select, index) in selectList"
+        :key="index"
+        :typeWork="select.type"
+        :currentType="currentTypeWork"
+        :textPrompt="select.prompt"
+      ></vue-modal>
+    </template>
+
+  </div>
+</template>
+
+<script>
+import VueModal from "@/UI/VueModal";
+
+export default {
+  workName: 'vue-select',
+  components: {
+    VueModal
+  },
+  emits: ['changeSelectOut'],
+  props: {
+    selectList: {
+      type: Array,
+      require: false
+    },
+    isVisible: {
+      type: Boolean,
+      require: true
+    }
+  },
+  data() {
+    return {
+      currentTypeWork: ''
+    }
+  },
+  methods: {
+    changeSelect(e) {
+      this.currentTypeWork = e.target.value;
+      this.$emit('changeSelectOut', e.target.value);
+    },
+  }
+}
+</script>
+
+<style scoped>
+.select__wrapper {
+  display: flex;
+  align-items: center;
+}
+</style>
