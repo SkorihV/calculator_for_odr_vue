@@ -22,28 +22,27 @@
 
 <script>
 export default {
-  workName: 'vue-input-number',
+  name: 'vue-input-number',
   props: {
     modelValue:{
-      type: Number,
+      type: [String, Number],
       default: 0,
-      name: 'count'
     },
-    title: [String]
+    title: [String, Number]
   },
   emits: ['update:modelValue', 'returnValue'],
   methods: {
     updateInput(e) {
-      this.$emit('update:modelValue', e.target.value);
+      this.$emit('update:modelValue', parseInt(e.target.value));
     },
     plusCount() {
-      this.$refs.inputValue.value++;
-      this.$emit('returnValue', this.$refs.inputValue.value);
+      this.$refs.inputValue.value = parseInt(this.$refs.inputValue.value) + 1;
+      this.$emit('returnValue',this.$refs.inputValue.value);
     },
     minusCount() {
       if (this.$refs.inputValue.value > 0) {
-        this.$refs.inputValue.value--;
-        this.$emit('returnValue', parseInt(this.$refs.inputValue.value));
+        this.$refs.inputValue.value = parseInt(this.$refs.inputValue.value) - 1;
+        this.$emit('returnValue', this.$refs.inputValue.value);
       }
     }
 

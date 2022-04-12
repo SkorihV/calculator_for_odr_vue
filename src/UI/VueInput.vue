@@ -1,7 +1,7 @@
 <template>
   <div class="input-group mb-1">
     <input
-      :value="modelValue"
+      v-model="modelValue"
       @input="updateInput"
       class="form-control"
       type="text"
@@ -12,10 +12,10 @@
 
 <script>
 export default {
-  workName: 'vue-input',
+  name: 'vue-input',
   props: {
-    modelValue: [String, Number],
-    title: [String]
+    modelValue: [String],
+    title: [String],
   },
   emits: ['update:modelValue'],
   methods: {

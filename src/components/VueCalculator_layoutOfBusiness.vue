@@ -44,8 +44,6 @@
       @returnValue="addNewLayout"
     ></vue-input-add>
 
-    <personal-discount></personal-discount>
-
     <vue-spoiler
       v-if="data.result.costWorkData"
       title="Показать результаты:"
@@ -68,10 +66,9 @@ import MDataCalculator from "@/mixins/m-dataCalculator";
 import deleteCalc from "@/UI/VueDeleteBtn";
 import VueSpoiler from "@/UI/VueSpoiler";
 import resultBlock from "@/UI/VueResultBlock";
-import personalDiscount from "@/UI/VuePersonalDiscount";
 
 export default {
-  name:'layoutOfBlock',
+  name: 'titleForBusiness',
   components: {
     VueInput,
     VueCheckbox,
@@ -80,8 +77,7 @@ export default {
     VueCheckboxRemove,
     deleteCalc,
     VueSpoiler,
-    resultBlock,
-    personalDiscount
+    resultBlock
   },
   mixins: [MDataCalculator],
   emits:['deleteCalc'],

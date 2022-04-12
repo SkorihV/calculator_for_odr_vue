@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  workName: 'vue-modal',
+  name: 'vue-modal',
   props: {
     typeWork: {
       type: String,
