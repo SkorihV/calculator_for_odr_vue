@@ -7,11 +7,11 @@
       title="Название работы"
     ></vue-input>
 
-    <vue-input-number
-      v-model="data.dataInner.countBlocks"
-      @returnValue="updateValueCountBlock"
-      title="Количество блоков"
-    ></vue-input-number>
+<!--    <vue-input-number-->
+<!--      v-model="data.dataInner.countBlocks"-->
+<!--      @returnValue="updateValueCountBlock"-->
+<!--      title="Количество шаблонов страниц"-->
+<!--    ></vue-input-number>-->
 
     <vue-checkbox
       :thisId="data.dataInner.isLayoutPc.id"
@@ -93,6 +93,7 @@ export default {
   emits:['deleteCalc'],
   created() {
     this.data.dataInner = this.createBaseData();
+    this.data.result = null;
     this.data.result = this.resultData;
   },
   beforeUpdate() {
@@ -127,6 +128,23 @@ export default {
       }
     },
   },
+  computed: {
+    costWorks() {
+      let cost = this.data.dataCalculated.nominalCost;
+
+      if (this.allLayouts.length > 1 ) {
+        for (let i = 1; i < this.allLayouts.length; i++) {
+          cost += this.data.dataCalculated.extraLayoutCost;
+        }
+      }
+
+      if (this.allLayouts.length === 0 ) {
+        cost = 0
+        return cost;
+      }
+      return cost;
+    },
+  }
 }
 </script>
 

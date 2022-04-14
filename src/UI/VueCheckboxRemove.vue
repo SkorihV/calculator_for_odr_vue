@@ -4,7 +4,7 @@
     <label class="form-check-label"  :for="thisId">{{labelText}}</label>
     <button
       type="button"
-      class="btn btn-outline-secondary small-btn"
+      class="btn btn-outline-secondary small-btn trash__btn"
       @click.stop="removeData"
     ><i class="fa-solid fa-trash"></i></button>
   </div>
@@ -39,7 +39,8 @@ export default {
 <style scoped>
 
 .form-check-input {
-  flex: 0 0 30px;
+  flex: 0 0 33px;
+  margin-right: 7px;
 }
 .form-check-input:checked {
   background-color: #198754;
@@ -52,6 +53,9 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.trash__btn {
+  margin-left: auto;
 }
 
 

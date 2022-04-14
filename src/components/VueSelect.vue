@@ -7,7 +7,7 @@
         class="form-select w-25" aria-label="Вид работы"
         id="inputGroupSelect01"
       >
-        <option value="false">Работа не выбрана</option>
+        <option :selected="selectedSelect" value="false">Работа не выбрана</option>
         <option
           v-for="(select, index) in selectList"
           :value="select.type"
@@ -15,7 +15,7 @@
         >{{ select.workName }}</option>
       </select>
     </div>
-    <template v-if="currentTypeWork">
+    <template v-if="currentTypeWork && selectedSelect === false">
       <vue-modal
         v-for="(select, index) in selectList"
         :key="index"
@@ -36,7 +36,7 @@ export default {
   components: {
     VueModal
   },
-  emits: ['changeSelectOut'],
+  emits: ['changeSelectOut', 'update:selectedSelect'],
   props: {
     selectList: {
       type: Array,
@@ -45,6 +45,10 @@ export default {
     isVisible: {
       type: Boolean,
       require: true
+    },
+    selectedSelect: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -54,6 +58,7 @@ export default {
   },
   methods: {
     changeSelect(e) {
+      this.$emit('update:selectedSelect', false)
       this.currentTypeWork = e.target.value;
       this.$emit('changeSelectOut', e.target.value);
     },

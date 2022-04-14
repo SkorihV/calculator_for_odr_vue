@@ -1,16 +1,32 @@
 <template>
-  <div>
-    <h3>Результаты:</h3>
-    <div v-if="data.countWorksData">Количество блоков: {{data.countWorksData}}</div>
-    <template v-if="data.allLayoutsData.length > 0">
+  <div v-if="dataValue.costWorkTotalData > 0">
+    <h3>{{mainTitle}}</h3>
+    <div v-if="(dataValue.countWorksData)">Количество блоков: {{dataValue.countWorksData}}</div>
+    <template v-if="dataValue.allLayoutsData.length > 0">
       <div>Будут реализованы следующие макеты: </div>
-      <div v-for="layout in data.allLayoutsData">
+      <div v-for="layout in dataValue.allLayoutsData">
         {{layout}}
       </div>
     </template>
-    <div v-if="data.allWorksTimeInnerData">Внутренние сроки: {{data.allWorksTimeInnerData}}</div>
-    <div v-if="data.allWorksTimeOutData">Сроки для клиента: {{data.allWorksTimeOutData}}</div>
-    <div v-if="data.costWorkData">Общая стоимость работ: {{data.costWorkData}}</div>
+    <div>Внутренние сроки: {{dataValue.allWorksTimeInnerData}}</div>
+    <div>Сроки для клиента: {{dataValue.allWorksTimeOutData}}</div>
+    <div>{{dataValue.displayValue }}</div>
+
+    <div v-if="dataValue.discountType === 'present' && parseFloat(dataValue.discountValue) > 0">
+      Персональная скидка - {{dataValue.discountValue}}%
+    </div>
+
+    <div v-if="dataValue.discountType === 'cash' && parseFloat(dataValue.discountValue) > 0">
+      Персональная скидка - {{dataValue.discountValue}}₽
+    </div>
+
+    <div v-if="dataValue.discountType && parseFloat(dataValue.discountValue) > 0">
+      <p>Сумма без скидки - {{dataValue.costWorkData}}</p>
+      <p>Сумма персональной скидки за работу - {{dataValue.costWorkData - dataValue.costWorkInDiscountData}}₽</p>
+      Общая стоимость работ: {{dataValue.costWorkTotalData}}₽
+    </div>
+    <div v-else-if="dataValue.costWorkData">Общая стоимость работы: {{dataValue.costWorkTotalData}}₽</div>
+    <hr />
   </div>
 </template>
 
@@ -18,9 +34,13 @@
 export default {
   name: 'result-block',
   props: {
-    data: {
+    dataValue: {
       type: Object,
       require: true
+    },
+    mainTitle: {
+      type: String,
+      default: ''
     }
   }
 }

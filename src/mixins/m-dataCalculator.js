@@ -1,4 +1,5 @@
 export default {
+  emits:['returnResultData', 'update:resultData'],
   props: {
     data: {
       type: Object,
@@ -7,11 +8,18 @@ export default {
     isAddWork: {
       type:Boolean,
       default: false
+    },
+  },
+  data() {
+    return {
+      discountValue: null,
+      discountType: null,
+      result: null
     }
   },
   methods: {
     updateValueCountBlock(value) {
-      this.data.dataInner.countBlocks = value;
+      this.data.dataInner.countBlocks = parseInt(value);
     },
     getRandomId() {
       return Math.random();
@@ -39,32 +47,63 @@ export default {
       return {
         allLayoutsData: this.allLayouts,
         costWorkData: this.costWorks,
+        costWorkInDiscountData: this.costWorkInDiscount,
         countWorksData: this.countBlocks,
+        costWorkTotalData: this.costTotal,
         allWorksTimeInnerData: this.allWorksTimeInner,
         allWorksTimeOutData: this.allWorksTimeOut,
-        blockName: this.blockName
+        blockName: this.blockName,
+        discountValue: this.personalDiscount,
+        discountType: this.typeDiscount
       }
     },
     costWorks() {
       let cost = 0;
-      if (this.data.dataInner.countBlocks === 0 || this.allLayouts.length === 0) {
+
+      if (this.data.dataInner.countBlocks === 0 || this.allLayouts.length === 0 ) {
         cost = 0
         return cost;
       }
+
+
       if (this.allLayouts.length && this.data.dataInner.countBlocks > 0) {
         cost += this.data.dataCalculated.nominalCost;
       }
+
       if (this.allLayouts.length > 1 && this.data.dataInner.countBlocks > 0) {
         for (let i = 1; i < this.allLayouts.length; i++) {
           cost += this.data.dataCalculated.extraLayoutCost;
         }
       }
-      if (this.data.dataInner.countBlocks > 1) {
-        for (let i = 1; i < this.data.dataInner.countBlocks; i++) {
+
+      if (this.countBlocks > 1) {
+        for (let i = 1; i < this.countBlocks; i++) {
           cost += this.data.dataCalculated.extraBlockCost;
         }
       }
       return cost;
+    },
+    costWorkInDiscount() {
+      let costInDiscount = 0;
+      if (this.discountType === 'present' && this.discountValue) {
+        costInDiscount = this.costWorks - ( this.costWorks / 100 * this.discountValue);
+      }
+
+      if (this.discountType === 'cash' && this.discountValue) {
+        costInDiscount = this.costWorks - parseFloat(this.discountValue);
+      }
+      if (this.discountType === null) {
+        costInDiscount =  0
+      }
+
+      return costInDiscount;
+    },
+    costTotal() {
+      let costTotal = this.costWorks;
+      if (this.costWorkInDiscount !== 0) {
+        costTotal = costTotal - (costTotal - this.costWorkInDiscount);
+      }
+      return costTotal;
     },
     allLayouts() {
       let layouts = [];
@@ -114,7 +153,19 @@ export default {
       return this.data.dataInner.name;
     },
     countBlocks() {
-      return this.data.dataInner.countBlocks;
+      return parseInt(this.data.dataInner.countBlocks);
+    },
+    personalDiscount() {
+      return this.discountValue;
+    },
+    typeDiscount() {
+      return this.discountType;
     }
-  }
+  },
+  // watch: {
+  //   costWorks () {
+  //     this.$emit('update:resultData', this.resultData);
+  //   }
+  // }
+
 }

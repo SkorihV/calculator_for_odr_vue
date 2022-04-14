@@ -5,6 +5,7 @@
       class="form-control"
       type="text"
       @keyup.enter="returnValue"
+      placeholder="Название макета"
     >
     <button
       type="button"
@@ -27,6 +28,7 @@ export default {
     returnValue() {
       if (this.inputValue !== null && this.inputValue.length > 5) {
         this.$emit('returnValue', this.inputValue)
+        this.inputValue = '';
       }
     }
   }

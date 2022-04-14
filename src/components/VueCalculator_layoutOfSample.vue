@@ -10,7 +10,7 @@
     <vue-input-number
       v-model="data.dataInner.countBlocks"
       @returnValue="updateValueCountBlock"
-      title="Количество блоков"
+      title="Дополнительные блоки"
     ></vue-input-number>
 
     <vue-checkbox
@@ -62,7 +62,7 @@
 
     <delete-calc @deleteCalc="this.$emit('deleteCalc', this.data.id)"></delete-calc>
   </div>
-  </keep-alive>
+    </keep-alive>
 </template>
 <script>
 import VueInput from "@/UI/VueInput";
@@ -93,6 +93,7 @@ export default {
   emits:['deleteCalc'],
   created() {
     this.data.dataInner = this.createBaseData();
+    this.data.result = null;
     this.data.result = this.resultData;
   },
   beforeUpdate() {
@@ -127,6 +128,28 @@ export default {
       }
     },
   },
+  computed: {
+    costWorks() {
+      let cost = this.data.dataCalculated.nominalCost;
+
+      if (this.allLayouts.length > 1 ) {
+        for (let i = 1; i < this.allLayouts.length; i++) {
+          cost += this.data.dataCalculated.extraLayoutCost;
+        }
+      }
+
+      if (this.countBlocks > 0) {
+        for (let i = 0; i < this.countBlocks; i++) {
+          cost += this.data.dataCalculated.extraBlockCost;
+        }
+      }
+
+      if (this.allLayouts.length === 0 ) {
+        cost = 0
+      }
+      return cost;
+    },
+  }
 }
 </script>
 

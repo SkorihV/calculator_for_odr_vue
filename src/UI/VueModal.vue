@@ -72,7 +72,10 @@ export default {
   border: 2px solid #86b7fe;
   margin-left: 10px;
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%)
+  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .visibleModalBtn {
@@ -83,5 +86,4 @@ export default {
   opacity: 1;
   background: #0000003d;
 }
-
 </style>

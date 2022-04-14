@@ -5,7 +5,7 @@
         id="inputGroup-sizing-sm"
       >{{title}}</span>
       <input
-        readonly
+        pattern="/[0-9]/"
         :value="modelValue"
         ref="inputValue"
         @input="updateInput"
@@ -37,15 +37,15 @@ export default {
     },
     plusCount() {
       this.$refs.inputValue.value = parseInt(this.$refs.inputValue.value) + 1;
-      this.$emit('returnValue',this.$refs.inputValue.value);
+      this.$emit('returnValue', parseInt(this.$refs.inputValue.value));
+
     },
     minusCount() {
       if (this.$refs.inputValue.value > 0) {
         this.$refs.inputValue.value = parseInt(this.$refs.inputValue.value) - 1;
-        this.$emit('returnValue', this.$refs.inputValue.value);
+        this.$emit('returnValue', parseInt(this.$refs.inputValue.value));
       }
     }
-
   }
 }
 </script>

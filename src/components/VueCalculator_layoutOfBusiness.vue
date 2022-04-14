@@ -1,6 +1,6 @@
 <template>
   <keep-alive>
-  <div class="calculator__wrapper w-25">
+  <div class="calculator__wrapper">
     <h4>{{data.dataCalculated.workName}}</h4>
     <vue-input
       v-model="data.dataInner.name"
@@ -10,7 +10,7 @@
     <vue-input-number
       v-model="data.dataInner.countBlocks"
       @returnValue="updateValueCountBlock"
-      title="Количество блоков"
+      title="Количество дополнительных доработок"
     ></vue-input-number>
 
     <vue-checkbox
@@ -44,12 +44,19 @@
       @returnValue="addNewLayout"
     ></vue-input-add>
 
+    <personal-discount
+      v-model="discountValue"
+      v-model:typeDiscount="discountType"
+    ></personal-discount>
+
     <vue-spoiler
       v-if="data.result.costWorkData"
       title="Показать результаты:"
       titleExpanded="Скрыть результаты:"
     >
-      <result-block :data="this.resultData"></result-block>
+      <result-block
+        :dataValue="this.resultData"
+      ></result-block>
     </vue-spoiler>
 
     <delete-calc @deleteCalc="this.$emit('deleteCalc', this.data.id)"></delete-calc>
@@ -66,6 +73,7 @@ import MDataCalculator from "@/mixins/m-dataCalculator";
 import deleteCalc from "@/UI/VueDeleteBtn";
 import VueSpoiler from "@/UI/VueSpoiler";
 import resultBlock from "@/UI/VueResultBlock";
+import personalDiscount from "@/UI/VuePersonalDiscount";
 
 export default {
   name: 'titleForBusiness',
@@ -77,7 +85,8 @@ export default {
     VueCheckboxRemove,
     deleteCalc,
     VueSpoiler,
-    resultBlock
+    resultBlock,
+    personalDiscount
   },
   mixins: [MDataCalculator],
   emits:['deleteCalc'],
@@ -117,6 +126,28 @@ export default {
       }
     },
   },
+  computed: {
+    costWorks() {
+      let cost = this.data.dataCalculated.nominalCost;
+
+      if (this.allLayouts.length > 1 ) {
+        for (let i = 1; i < this.allLayouts.length; i++) {
+          cost += this.data.dataCalculated.extraLayoutCost;
+        }
+      }
+
+      if (this.countBlocks > 0) {
+        for (let i = 0; i < this.countBlocks; i++) {
+          cost += this.data.dataCalculated.extraBlockCost;
+        }
+      }
+
+      if (this.allLayouts.length === 0 ) {
+        cost = 0
+      }
+      return cost;
+    },
+  }
 }
 </script>
 
@@ -125,5 +156,7 @@ export default {
   margin: 0 10px;
   display: flex;
   flex-direction: column;
+  max-width: 30%;
+  width: 100%;
 }
 </style>
