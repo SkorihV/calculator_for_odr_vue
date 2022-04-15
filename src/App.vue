@@ -6,7 +6,7 @@
       v-model:selectedSelect="selectedSelect"
       @changeSelectOut="changedTypeWork"
     ></vue-select>
-    <div v-if="currentTypeWork.length > 5" class="btn-group w-25" role="group" aria-label="Basic mixed styles example">
+    <div v-if="currentTypeWork.length > 5" class="btn-group add__work__btn" role="group" aria-label="Basic mixed styles example">
       <button @click.stop="addWork" type="button" class="btn btn-success">Добавить работу в список</button>
     </div>
     <div class="allWorks mt-3">
@@ -41,6 +41,8 @@ import titleForBusiness from "@/components/VueCalculator_layoutOfBusiness";
 import layoutForShop from "@/components/VueCalculator_layoutOfShop";
 import newSample from "@/components/VueCalculator_layoutOfSample";
 import resultBlock from "@/UI/VueResultBlock";
+import {useStore} from "@/useStore";
+
 
 export default {
   workName: 'App',
@@ -55,7 +57,14 @@ export default {
     newSample,
     resultBlock
   },
+  setup() {
+    const store = useStore();
 
+    return {
+      store,
+      getSomething: store.getSomething
+    }
+  },
   data() {
     return {
       dataListOut: [],
@@ -90,7 +99,7 @@ export default {
       this.selectedSelect = true;
     },
     deleteCalc(id) {
-      this.dataWorksList = this.dataWorksList.filter(calc => {
+      this.worksList = this.worksList.filter(calc => {
         return calc.id !== id;
       })
     },
@@ -107,14 +116,6 @@ export default {
           }
         });
     },
-    dataForCalculator() {
-      return this.dataListOut.filter(item => {
-        return item.dataCalculated.type === this.currentTypeWork;
-      })[0];
-    },
-    allCostWorks() {
-
-    }
   },
   watch: {
     dataWorksList: {
@@ -155,5 +156,10 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+
+.add__work__btn {
+  max-width: 450px;
+  width: 100%;
 }
 </style>

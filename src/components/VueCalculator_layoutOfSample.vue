@@ -8,8 +8,7 @@
     ></vue-input>
 
     <vue-input-number
-      v-model="data.dataInner.countBlocks"
-      @returnValue="updateValueCountBlock"
+      @returnValue="returnValue"
       title="Дополнительные блоки"
     ></vue-input-number>
 
@@ -160,5 +159,16 @@ export default {
   flex-direction: column;
   max-width: 30%;
   width: 100%;
+}
+@media all and (max-width: 980px) {
+  .calculator__wrapper {
+    max-width: 45%;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .calculator__wrapper {
+    max-width: 100%;
+  }
 }
 </style>

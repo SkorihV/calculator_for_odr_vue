@@ -88,4 +88,9 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+@media all and (max-width: 420px) {
+  .discount {
+    flex-direction: column;
+  }
+}
 </style>

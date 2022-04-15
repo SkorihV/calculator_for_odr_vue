@@ -18,9 +18,6 @@ export default {
     }
   },
   methods: {
-    updateValueCountBlock(value) {
-      this.data.dataInner.countBlocks = parseInt(value);
-    },
     getRandomId() {
       return Math.random();
     },
@@ -41,6 +38,11 @@ export default {
         return item.id !== id;
       })
     },
+    returnValue(value) {
+      console.log(value)
+      this.data.dataInner.countBlocks = value;
+      console.log(this.data.dataInner.countBlocks)
+    }
   },
   computed: {
     resultData() {
@@ -64,7 +66,6 @@ export default {
         cost = 0
         return cost;
       }
-
 
       if (this.allLayouts.length && this.data.dataInner.countBlocks > 0) {
         cost += this.data.dataCalculated.nominalCost;
@@ -153,7 +154,7 @@ export default {
       return this.data.dataInner.name;
     },
     countBlocks() {
-      return parseInt(this.data.dataInner.countBlocks);
+        return parseInt(this.data.dataInner.countBlocks)
     },
     personalDiscount() {
       return this.discountValue;

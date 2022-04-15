@@ -8,8 +8,7 @@
     ></vue-input>
 
     <vue-input-number
-      v-model="data.dataInner.countBlocks"
-      @returnValue="updateValueCountBlock"
+      @returnValue="returnValue"
       title="Количество дополнительных доработок"
     ></vue-input-number>
 
@@ -129,7 +128,6 @@ export default {
   computed: {
     costWorks() {
       let cost = this.data.dataCalculated.nominalCost;
-
       if (this.allLayouts.length > 1 ) {
         for (let i = 1; i < this.allLayouts.length; i++) {
           cost += this.data.dataCalculated.extraLayoutCost;
@@ -158,5 +156,16 @@ export default {
   flex-direction: column;
   max-width: 30%;
   width: 100%;
+}
+@media all and (max-width: 980px) {
+  .calculator__wrapper {
+    max-width: 45%;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .calculator__wrapper {
+    max-width: 100%;
+  }
 }
 </style>

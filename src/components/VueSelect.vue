@@ -1,10 +1,10 @@
 <template>
-  <div class="select__wrapper w-25 mb-3">
+  <div class="select__wrapper mb-3">
     <div class="input-group">
       <label class="input-group-text" for="inputGroupSelect01">Выбор работы: </label>
       <select
         @change="changeSelect"
-        class="form-select w-25" aria-label="Вид работы"
+        class="form-select" aria-label="Вид работы"
         id="inputGroupSelect01"
       >
         <option :selected="selectedSelect" value="false">Работа не выбрана</option>
@@ -70,5 +70,17 @@ export default {
 .select__wrapper {
   display: flex;
   align-items: center;
+  max-width: 450px;
+}
+.form-select {
+  width: 30%;
+}
+@media all and (max-width: 500px) {
+  .input-group {
+    flex-direction: column;
+  }
+  .form-select {
+    width: 100%;
+  }
 }
 </style>
