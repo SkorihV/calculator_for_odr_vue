@@ -8,7 +8,7 @@
     ></vue-input>
 
     <vue-input-number
-      @returnValue="returnValue"
+      :calcId="data.id"
       title="Количество дополнительных доработок"
     ></vue-input-number>
 
@@ -58,7 +58,7 @@
       ></result-block>
     </vue-spoiler>
 
-    <delete-calc @deleteCalc="this.$emit('deleteCalc', this.data.id)"></delete-calc>
+    <delete-calc :calcId="this.data.id"></delete-calc>
   </div>
     </keep-alive>
 </template>

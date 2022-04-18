@@ -8,8 +8,8 @@
     ></vue-input>
 
     <vue-input-number
-      @returnValue="returnValue"
       title="Количество блоков"
+      :calcId="data.id"
     ></vue-input-number>
 
     <vue-checkbox
@@ -55,11 +55,11 @@
       titleExpanded="Скрыть результаты:"
     >
       <result-block
-        :dataValue="this.resultData"
+        :dataValue="this.data.result"
       ></result-block>
     </vue-spoiler>
 
-    <delete-calc @deleteCalc="this.$emit('deleteCalc', this.data.id)"></delete-calc>
+    <delete-calc :calcId="this.data.id"></delete-calc>
   </div>
   </keep-alive>
 </template>
@@ -89,42 +89,74 @@ export default {
     personalDiscount
   },
   mixins: [MDataCalculator],
-  emits:['deleteCalc'],
   created() {
-    this.data.dataInner = this.createBaseData();
-    this.data.result = this.resultData;
+    // this.$state.commit('createInnerData', {id: this.data.id, data: this.dataInner})
+
+    // this.data.dataInner = this.createBaseData();
+    // this.data.result = this.resultData;
+  },
+  mounted() {
+
   },
   beforeUpdate() {
-    this.data.result = this.resultData;
+      this.data.result.allLayoutsData = this.allLayouts;
+      this.data.result.costWorkData = this.costWorks;
+      this.data.result.costWorkInDiscountData = this.costWorkInDiscount;
+      this.data.result.countWorksData = this.countBlocks;
+      this.data.result.costWorkTotalData = this.costTotal;
+      this.data.result.allWorksTimeInnerData = this.allWorksTimeInner;
+      this.data.result.allWorksTimeOutData = this.allWorksTimeOut;
+      this.data.result.blockName = this.blockName;
+      this.data.result.discountValue = this.personalDiscount;
+      this.data.result.discountType = this.typeDiscount;
   },
   data() {
     return {
-
+      // dataInner: {
+      //   name: '',
+      //   countBlocks: 0,
+      //   isLayoutPc: {
+      //     isDone: false,
+      //     name: 'Макет для ПК.',
+      //     id: this.getRandomId()
+      //   },
+      //   isLayoutTable: {
+      //     isDone: false,
+      //     name: 'Макет для Планшета.',
+      //     id: this.getRandomId()
+      //   },
+      //   isLayoutMobile: {
+      //     isDone: false,
+      //     name: 'Макет для Смартфона.',
+      //     id: this.getRandomId()
+      //   },
+      //   extraLayouts: [],
+      // }
     }
   },
   methods: {
-    createBaseData() {
-      return  {
-        name: '',
-        countBlocks: 0,
-        isLayoutPc: {
-          isDone: false,
-          name: 'Макет для ПК.',
-          id: this.getRandomId()
-        },
-        isLayoutTable: {
-          isDone: false,
-          name: 'Макет для Планшета.',
-          id: this.getRandomId()
-        },
-        isLayoutMobile: {
-          isDone: false,
-          name: 'Макет для Смартфона.',
-          id: this.getRandomId()
-        },
-        extraLayouts: [],
-      }
-    },
+    // createBaseData() {
+    //   return  {
+    //     name: '',
+    //     countBlocks: 0,
+    //     isLayoutPc: {
+    //       isDone: false,
+    //       name: 'Макет для ПК.',
+    //       id: this.getRandomId()
+    //     },
+    //     isLayoutTable: {
+    //       isDone: false,
+    //       name: 'Макет для Планшета.',
+    //       id: this.getRandomId()
+    //     },
+    //     isLayoutMobile: {
+    //       isDone: false,
+    //       name: 'Макет для Смартфона.',
+    //       id: this.getRandomId()
+    //     },
+    //     extraLayouts: [],
+    //   }
+    // },
   },
 }
 </script>

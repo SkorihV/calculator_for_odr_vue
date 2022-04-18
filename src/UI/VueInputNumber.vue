@@ -29,9 +29,9 @@ export default {
       type: [String,Number],
       default: 0,
     },
-    title: [String, Number]
+    title: [String, Number],
+    calcId: [Number],
   },
-  emits: ['update:modelValue', 'plus', 'minus', 'returnValue'],
   data() {
     return {
       value: 0,
@@ -50,7 +50,10 @@ export default {
       if (isNaN(parseInt(this.value)) || this.value < 0) {
         this.value = 0;
       }
-      this.$emit('returnValue', this.value);
+      this.$store.commit('updateCountWorkData', {
+        id: this.calcId,
+        value: this.value
+      })
     }
   }
 }

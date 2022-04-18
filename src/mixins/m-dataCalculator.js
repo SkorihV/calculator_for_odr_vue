@@ -1,20 +1,31 @@
 export default {
-  emits:['returnResultData', 'update:resultData'],
+  // emits:['returnResultData', 'update:resultData'],
   props: {
-    data: {
-      type: Object,
-      require: true,
-    },
     isAddWork: {
       type:Boolean,
       default: false
     },
+    data: {
+      type: Object,
+      required: true
+    }
   },
   data() {
     return {
       discountValue: null,
       discountType: null,
-      result: null
+      result: {
+        allLayoutsData: this.allLayouts,
+        costWorkData: this.costWorks,
+        costWorkInDiscountData: this.costWorkInDiscount,
+        countWorksData: this.countBlocks,
+        costWorkTotalData: this.costTotal,
+        allWorksTimeInnerData: this.allWorksTimeInner,
+        allWorksTimeOutData: this.allWorksTimeOut,
+        blockName: this.blockName,
+        discountValue: this.personalDiscount,
+        discountType: this.typeDiscount
+      }
     }
   },
   methods: {
@@ -37,40 +48,35 @@ export default {
       this.data.dataInner.extraLayouts = this.data.dataInner.extraLayouts.filter(item => {
         return item.id !== id;
       })
-    },
-    returnValue(value) {
-      console.log(value)
-      this.data.dataInner.countBlocks = value;
-      console.log(this.data.dataInner.countBlocks)
     }
   },
   computed: {
-    resultData() {
-      return {
-        allLayoutsData: this.allLayouts,
-        costWorkData: this.costWorks,
-        costWorkInDiscountData: this.costWorkInDiscount,
-        countWorksData: this.countBlocks,
-        costWorkTotalData: this.costTotal,
-        allWorksTimeInnerData: this.allWorksTimeInner,
-        allWorksTimeOutData: this.allWorksTimeOut,
-        blockName: this.blockName,
-        discountValue: this.personalDiscount,
-        discountType: this.typeDiscount
-      }
-    },
+    // resultData() {
+    //   return {
+    //     allLayoutsData: this.allLayouts,
+    //     costWorkData: this.costWorks,
+    //     costWorkInDiscountData: this.costWorkInDiscount,
+    //     countWorksData: this.countBlocks,
+    //     costWorkTotalData: this.costTotal,
+    //     allWorksTimeInnerData: this.allWorksTimeInner,
+    //     allWorksTimeOutData: this.allWorksTimeOut,
+    //     blockName: this.blockName,
+    //     discountValue: this.personalDiscount,
+    //     discountType: this.typeDiscount
+    //   }
+    // },
     costWorks() {
       let cost = 0;
-
       if (this.data.dataInner.countBlocks === 0 || this.allLayouts.length === 0 ) {
         cost = 0
         return cost;
       }
 
+
       if (this.allLayouts.length && this.data.dataInner.countBlocks > 0) {
         cost += this.data.dataCalculated.nominalCost;
       }
-
+      console.log('costWorks')
       if (this.allLayouts.length > 1 && this.data.dataInner.countBlocks > 0) {
         for (let i = 1; i < this.allLayouts.length; i++) {
           cost += this.data.dataCalculated.extraLayoutCost;
@@ -151,22 +157,29 @@ export default {
       return innerTime;
     },
     blockName() {
+
       return this.data.dataInner.name;
     },
     countBlocks() {
+
         return parseInt(this.data.dataInner.countBlocks)
     },
     personalDiscount() {
+
       return this.discountValue;
     },
     typeDiscount() {
+      console.log(7)
       return this.discountType;
     }
   },
-  // watch: {
-  //   costWorks () {
-  //     this.$emit('update:resultData', this.resultData);
-  //   }
-  // }
-
+  watch: {
+    result: {
+      handler() {
+        console.log(333)
+        this.$state.commit('updateResultData', {result: this.result, calcId: this.data.id })
+      },
+      deep: true
+    }
+  }
 }

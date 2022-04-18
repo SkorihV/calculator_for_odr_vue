@@ -8,8 +8,8 @@
     ></vue-input>
 
 <!--    <vue-input-number-->
-<!--    @returnValue="returnValue"-->
 <!--      title="Количество шаблонов страниц"-->
+    <!--:calcId="data.id"-->
 <!--    ></vue-input-number>-->
 
     <vue-checkbox
@@ -59,7 +59,7 @@
       ></result-block>
     </vue-spoiler>
 
-    <delete-calc @deleteCalc="this.$emit('deleteCalc', this.data.id)"></delete-calc>
+    <delete-calc :calcId="this.data.id"></delete-calc>
   </div>
   </keep-alive>
 </template>
@@ -89,14 +89,13 @@ export default {
     personalDiscount
   },
   mixins: [MDataCalculator],
-  emits:['deleteCalc'],
   created() {
-    this.data.dataInner = this.createBaseData();
-    this.data.result = null;
-    this.data.result = this.resultData;
+    // this.data.dataInner = this.createBaseData();
+    // this.data.result = null;
+    // this.data.result = this.resultData;
   },
   beforeUpdate() {
-    this.data.result = this.resultData;
+    // this.data.result = this.resultData;
   },
   data() {
     return {

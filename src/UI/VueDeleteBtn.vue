@@ -9,10 +9,12 @@
 <script>
 export default {
   name: 'delete-calc',
-  emits:['deleteCalc'],
+  props: {
+    calcId: [Number]
+  },
   methods: {
     deleteCalc() {
-      return this.$emit('deleteCalc')
+      this.$store.commit('deleteCalc', this.calcId);
     }
   }
 }

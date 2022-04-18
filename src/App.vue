@@ -11,43 +11,44 @@
     </div>
     <div class="allWorks mt-3">
         <Component
-          v-for=" (work, index) in dataWorksList"
+          v-for="work in workList"
           :key="work.id"
           :is="work.dataCalculated.type"
           :data="work"
-          @deleteCalc="deleteCalc"
-          v-model:resultData="updateResultData"
         ></Component>
+    </div>
 
+    <div v-for="t in workList">
+      {{t.result}}
     </div>
-    <div class="allResult" v-if="totalSumm > 0">
-      <h2>Список всех работ!</h2>
-      <template v-for="data in dataWorksList">
-        <result-block
-          v-if="data.result !== null"
-          :dataValue="data.result"
-          :mainTitle="data.dataInner.name"
-        ></result-block>
-      </template>
-      <div>Общая сумма заказа - {{totalSumm}}₽</div>
-    </div>
+
+<!--    <div class="allResult" v-if="totalSumm > 0">-->
+<!--      <h2>Список всех работ!</h2>-->
+<!--      <template v-for="data in workList">-->
+<!--        <result-block-->
+<!--          v-if="data.result !== null"-->
+<!--          :dataValue="data.result"-->
+<!--          :mainTitle="data.dataInner.name"-->
+<!--        ></result-block>-->
+<!--      </template>-->
+<!--      <div>Общая сумма заказа - {{totalSumm}}₽</div>-->
+<!--    </div>-->
   </div>
 </template>
 
 <script>
+import {mapState, mapGetters, mapMutations} from 'vuex';
 import VueSelect from "@/components/VueSelect";
 import layoutOfBlock from "@/components/VueCalculator_layoutOfBlock";
 import titleForBusiness from "@/components/VueCalculator_layoutOfBusiness";
 import layoutForShop from "@/components/VueCalculator_layoutOfShop";
 import newSample from "@/components/VueCalculator_layoutOfSample";
 import resultBlock from "@/UI/VueResultBlock";
-import {useStore} from "@/useStore";
-
 
 export default {
   workName: 'App',
   created() {
-    this.dataListOut = window.staticStore.dataOut;
+    // this.dataListOut = window.staticStore.dataOut;
   },
   components: {
     VueSelect,
@@ -57,25 +58,14 @@ export default {
     newSample,
     resultBlock
   },
-  setup() {
-    const store = useStore();
-
-    return {
-      store,
-      getSomething: store.getSomething
-    }
-  },
   data() {
     return {
-      dataListOut: [],
       currentTypeWork: '',
-      dataWorksList: [],
       selectedSelect: true,
-      resultData: [],
-      totalSumm: 0
     }
   },
   methods: {
+    ...mapMutations(['addNewWork', 'addTotalSumm', 'deleteCalc']),
     changedTypeWork(value) {
       this.currentTypeWork = value;
     },
@@ -83,7 +73,7 @@ export default {
       if (!this.$options.components.hasOwnProperty(this.currentTypeWork)) {
         return false;
       }
-      let list = JSON.parse(JSON.stringify(this.dataListOut))
+      let list = JSON.parse(JSON.stringify(this.listOut))
       let work = null;
       let id = Math.random();
       list.forEach( item => {
@@ -93,43 +83,32 @@ export default {
           work.result = null;
         }
       })
-
-      this.dataWorksList.push(work);
+      this.$store.commit('addNewWork',work);
       this.currentTypeWork = '';
       this.selectedSelect = true;
     },
-    deleteCalc(id) {
-      this.worksList = this.worksList.filter(calc => {
-        return calc.id !== id;
-      })
-    },
-    updateResultData(value) {
-    },
+    // updateResultData(value) {
+    // },
   },
   computed: {
-    selectList() {
-        return this.dataListOut.map(item => {
-          return {
-            workName: item.dataCalculated.workName,
-            type:     item.dataCalculated.type,
-            prompt:   item.dataCalculated.prompt
-          }
-        });
-    },
+    // ...mapState({
+    //   dataListOut: state => state.dataListOut,
+    // }),
+    ...mapState(['dataWorksList', 'totalSumm']),
+    ...mapGetters(['listOut', 'selectList', 'workList']),
   },
   watch: {
-    dataWorksList: {
+    workList: {
       handler() {
-        this.totalSumm = this.dataWorksList.reduce((value, item) => {
+        let summ = this.workList.reduce((value, item) => {
           if (item.result !== null) {
             return value += item.result.costWorkTotalData;
           }
           return value
-        }, 0)
-
+        }, 0);
+        this.addTotalSumm(summ);
       },
       deep: true
-
     }
   }
 };
