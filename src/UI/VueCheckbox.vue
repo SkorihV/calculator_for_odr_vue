@@ -20,7 +20,7 @@ export default {
       require: true
     },
     thisId: [Number],
-    value: Boolean,
+    value: String,
     modelValue: Boolean
   },
   data() {

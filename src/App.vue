@@ -1,34 +1,39 @@
 <template>
   <div class="app__wrapper p-5">
-    <vue-select
-      ref="select-work"
-      :selectList="selectList"
-      v-model:selectedSelect="selectedSelect"
-      @changeSelectOut="changedTypeWork"
-    ></vue-select>
-    <div v-if="currentTypeWork.length > 5" class="btn-group add__work__btn" role="group" aria-label="Basic mixed styles example">
-      <button @click.stop="addWork" type="button" class="btn btn-success">Добавить работу в список</button>
+    <div class="control__block">
+      <vue-select
+        ref="select-work"
+        :selectList="selectList"
+        v-model:selectedSelect="selectedSelect"
+        @changeSelectOut="changedTypeWork"
+      ></vue-select>
+      <div v-if="currentTypeWork.length > 5" class="btn-group add__work__btn" role="group" aria-label="Basic mixed styles example">
+        <button @click.stop="addWork" type="button" class="btn btn-success">Добавить работу в список</button>
+      </div>
     </div>
-    <div class="allWorks mt-3">
+
+    <div class="content__block">
+      <div class="allWorks mt-3">
         <Component
           v-for="work in workList"
           :key="work.id"
           :is="work.dataCalculated.type"
           :data="work"
         ></Component>
-    </div>
+      </div>
 
-    <div class="allResult" v-if="totalSumm > 0">
-      <h2>Список всех работ!</h2>
-      <template v-for="data in workList">
-        <result-block
-          class="w-25"
-          v-if="data.result !== null"
-          :dataValue="data.result"
-          :mainTitle="data.dataInner.name"
-        ></result-block>
-      </template>
-      <div class="text-info bg-dark p-1 w-25">Общая сумма заказа - {{totalSumm}}₽</div>
+      <div class="allResult" v-if="totalSumm > 0">
+        <h2>Список всех работ!</h2>
+        <template v-for="data in workList">
+          <result-block
+            :isHovered="data.isHovered"
+            v-if="data.result !== null"
+            :dataValue="data.result"
+            :mainTitle="data.dataInner.name"
+          ></result-block>
+        </template>
+        <div class="text-info bg-dark p-1">Общая сумма заказа - {{totalSumm}}₽</div>
+      </div>
     </div>
   </div>
 </template>
@@ -123,15 +128,70 @@ export default {
   justify-content: flex-start;
   flex-direction: column;
 }
-
+.content__block {
+  display: flex;
+  flex-direction: row;
+}
 .allWorks {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  flex: 1 0 80%;
+  max-width: 80%;
+}
+
+@media all and (max-width: 1250px) {
+  .allWorks {
+    flex: 1 0 70%;
+    max-width: 70%;
+  }
+}
+
+
+@media all and (max-width: 980px) {
+  .allWorks {
+    flex: 1 0 60%;
+    max-width: 60%;
+  }
 }
 
 .add__work__btn {
   max-width: 450px;
   width: 100%;
 }
+
+.allResult {
+  position: fixed;
+  height: 80%;
+  overflow-y: auto;
+  max-width: 40%;
+  right: 10px;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  background-color: white;
+  z-index: 5;
+  padding: 10px;
+}
+
+@media all and (max-width: 768px) {
+  .content__block {
+    flex-direction: column;
+  }
+  .allWorks {
+    max-width: 100%;;
+    flex: 1 0 auto;
+
+  }
+  .allResult {
+    margin-top: 15px;
+    position: relative;
+    overflow-y: auto;
+    max-width: 100%;;
+    height: auto;
+    right: 0;
+  }
+}
+
+
+
 </style>

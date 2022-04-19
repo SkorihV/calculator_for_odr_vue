@@ -1,6 +1,6 @@
 <template>
   <keep-alive>
-  <div class="calculator__wrapper">
+  <div class="calculator__wrapper" @mouseover="isHoveredOn" @mouseleave="isHoveredOff">
     <h4>{{data.dataCalculated.workName}}</h4>
     <vue-input
       v-model="data.dataInner.name"
@@ -15,18 +15,22 @@
     <vue-checkbox
       :thisId="data.dataInner.isLayoutPc.id"
       :labelText="data.dataInner.isLayoutPc.name"
+      :value="data.dataInner.isLayoutPc.name"
       v-model="data.dataInner.isLayoutPc.isDone"
+
     ></vue-checkbox>
 
     <vue-checkbox
       :thisId="data.dataInner.isLayoutTable.id"
       :labelText="data.dataInner.isLayoutTable.name"
+      :value="data.dataInner.isLayoutPc.name"
       v-model="data.dataInner.isLayoutTable.isDone"
     ></vue-checkbox>
 
     <vue-checkbox
       :thisId="data.dataInner.isLayoutMobile.id"
       :labelText="data.dataInner.isLayoutMobile.name"
+      :value="data.dataInner.isLayoutPc.name"
       v-model="data.dataInner.isLayoutMobile.isDone"
     ></vue-checkbox>
 
@@ -97,19 +101,19 @@ export default {
   margin: 0 10px;
   display: flex;
   flex-direction: column;
-  max-width: 30%;
-  width: 100%;
+  flex: 0 1 30%;
 }
 
-@media all and (max-width: 980px) {
+@media all and (max-width:1250px) {
   .calculator__wrapper {
-    max-width: 45%;
+    flex: 1 1 40%;
   }
 }
 
-@media all and (max-width: 600px) {
+
+@media all and (max-width: 1050px) {
   .calculator__wrapper {
-    max-width: 100%;
+    flex: 1 1 100%;
   }
 }
 </style>

@@ -135,11 +135,10 @@ export default {
 
 .vue-spoiler {
   margin-bottom: 10px;
-
+  position: relative;
   border-radius: 5px;
   border: 1px solid #cccccc;
   background-color: white;
-  font-family: 'Fira Sans';
 }
 .vue-spoiler .title {
   padding: 10px 15px;
@@ -151,6 +150,14 @@ export default {
 
 .vue-spoiler .content {
   padding: 15px;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  color: black;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  background-color: white;
+  z-index: 10;
 }
 
 /* Expand animation */

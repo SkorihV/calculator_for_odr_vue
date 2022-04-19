@@ -40,16 +40,22 @@ export default {
       })
     },
     updateResultData() {
-      this.data.result.allLayoutsData = this.allLayouts;
-      this.data.result.costWorkData = this.costWorks;
-      this.data.result.costWorkInDiscountData = this.costWorkInDiscount;
-      this.data.result.countWorksData = this.countBlocks;
-      this.data.result.costWorkTotalData = this.costTotal;
-      this.data.result.allWorksTimeInnerData = this.allWorksTimeInner;
-      this.data.result.allWorksTimeOutData = this.allWorksTimeOut;
-      this.data.result.blockName = this.blockName;
-      this.data.result.discountValue = this.personalDiscount;
-      this.data.result.discountType = this.typeDiscount;
+      this.$store.dispatch('updatedAllLayoutsData',{ id: this.data.id, allLayouts: this.allLayouts });
+      this.$store.dispatch('updatedCostWorkData',{ id: this.data.id, costWorkData: this.costWorks });
+      this.$store.dispatch('updatedCostWorkInDiscountData',{ id: this.data.id, costWorkInDiscountData: this.costWorkInDiscount });
+      this.$store.dispatch('updatedCountWorksData',{ id: this.data.id, countWorksData: this.countBlocks });
+      this.$store.dispatch('updatedCostWorkTotalData',{ id: this.data.id, costWorkTotalData: this.costTotal });
+      this.$store.dispatch('updatedAllWorksTimeInnerData',{ id: this.data.id, allWorksTimeInnerData: this.allWorksTimeInner });
+      this.$store.dispatch('updatedAllWorksTimeOutData',{ id: this.data.id, allWorksTimeOutData: this.allWorksTimeOut });
+      this.$store.dispatch('updatedBlockName',{ id: this.data.id, blockName: this.blockName });
+      this.$store.dispatch('updatedDiscountValue',{ id: this.data.id, discountValue: this.personalDiscount });
+      this.$store.dispatch('updatedDiscountType',{ id: this.data.id, discountType: this.typeDiscount });
+    },
+    isHoveredOn() {
+      this.$store.dispatch('updatedIsHoveredOn', this.data.id)
+    },
+    isHoveredOff() {
+      this.$store.dispatch('updatedIsHoveredOff', this.data.id)
     }
   },
   computed: {
