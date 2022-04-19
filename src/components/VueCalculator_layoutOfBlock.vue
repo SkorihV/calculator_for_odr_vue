@@ -110,7 +110,6 @@ export default {
   }
 }
 
-
 @media all and (max-width: 1050px) {
   .calculator__wrapper {
     flex: 1 1 100%;

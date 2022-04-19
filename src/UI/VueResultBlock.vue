@@ -58,7 +58,24 @@ export default {
   .result__block {
     border-bottom: 1px solid black;
     padding: 5px 0;
+    max-width: 350px;
   }
+  @media all and (max-width: 1460px) {
+    .result__block {
+      max-width: 320px;
+    }
+  }
+  @media all and (max-width: 1460px) {
+    .result__block {
+      max-width: 290px;
+    }
+  }
+  @media all and (max-width: 768px) {
+    .result__block {
+      max-width: 100%;
+    }
+  }
+
   .text__block {
     padding-left: 10px;
   }

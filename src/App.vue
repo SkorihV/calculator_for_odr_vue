@@ -14,24 +14,26 @@
 
     <div class="content__block">
       <div class="allWorks mt-3">
-        <Component
-          v-for="work in workList"
-          :key="work.id"
-          :is="work.dataCalculated.type"
-          :data="work"
-        ></Component>
+        <transition-group name="calc-list">
+          <Component
+            v-for="work in workList"
+            :key="work.id"
+            :is="work.dataCalculated.type"
+            :data="work"
+          ></Component>
+        </transition-group>
       </div>
 
       <div class="allResult" v-if="totalSumm > 0">
         <h2>Список всех работ!</h2>
-        <template v-for="data in workList">
-          <result-block
-            :isHovered="data.isHovered"
-            v-if="data.result !== null"
-            :dataValue="data.result"
-            :mainTitle="data.dataInner.name"
-          ></result-block>
-        </template>
+          <template v-for="data in workList">
+            <result-block
+              :isHovered="data.isHovered"
+              v-if="data.result !== null"
+              :dataValue="data.result"
+              :mainTitle="data.dataInner.name"
+            ></result-block>
+          </template>
         <div class="text-info bg-dark p-1">Общая сумма заказа - {{totalSumm}}₽</div>
       </div>
     </div>
@@ -192,6 +194,21 @@ export default {
   }
 }
 
-
+.calc-list-item {
+  display: flex;
+  margin-right: 10px;
+}
+.calc-list-enter-active,
+.calc-list-leave-active {
+  transition: all 0.5s ease;
+}
+.calc-list-enter-from,
+.calc-list-leave-to {
+  opacity: 0;
+  transform: translateX(130px);
+}
+.calc-list-move {
+  transition: transform 0.8s ease;
+}
 
 </style>
