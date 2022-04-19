@@ -1,8 +1,8 @@
 <template>
   <div class="input-group mb-1">
     <input
-      v-model="modelValue"
-      @input="updateInput"
+      :value="modelValue"
+      @input="this.$emit('update:modelValue', $event.target.value)"
       class="form-control"
       type="text"
       :placeholder="title"
@@ -16,12 +16,6 @@ export default {
   props: {
     modelValue: [String],
     title: [String],
-  },
-  emits: ['update:modelValue'],
-  methods: {
-    updateInput(e) {
-      this.$emit('update:modelValue', e.target.value)
-    }
   }
 }
 </script>

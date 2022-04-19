@@ -49,12 +49,13 @@
     ></personal-discount>
 
     <vue-spoiler
+      @click.stop
       v-if="data.result.costWorkData"
       title="Показать результаты:"
       titleExpanded="Скрыть результаты:"
     >
       <result-block
-        :dataValue="this.resultData"
+        :dataValue="this.data.result"
       ></result-block>
     </vue-spoiler>
 
@@ -88,43 +89,6 @@ export default {
     personalDiscount
   },
   mixins: [MDataCalculator],
-  emits:['deleteCalc'],
-  created() {
-    this.data.dataInner = this.createBaseData();
-    this.data.result = null;
-    this.data.result = this.resultData;
-  },
-  beforeUpdate() {
-    this.data.result = this.resultData;
-  },
-  data() {
-    return {
-    }
-  },
-  methods: {
-    createBaseData() {
-      return  {
-        name: '',
-        countBlocks: 0,
-        isLayoutPc: {
-          isDone: false,
-          name: 'Макет для ПК.',
-          id: this.getRandomId()
-        },
-        isLayoutTable: {
-          isDone: false,
-          name: 'Макет для Планшета.',
-          id: this.getRandomId()
-        },
-        isLayoutMobile: {
-          isDone: false,
-          name: 'Макет для Смартфона.',
-          id: this.getRandomId()
-        },
-        extraLayouts: [],
-      }
-    },
-  },
   computed: {
     costWorks() {
       let cost = this.data.dataCalculated.nominalCost;
@@ -134,8 +98,8 @@ export default {
         }
       }
 
-      if (this.countBlocks > 0) {
-        for (let i = 0; i < this.countBlocks; i++) {
+      if (this.data.dataInner.countBlocks  > 0) {
+        for (let i = 0; i < this.data.dataInner.countBlocks ; i++) {
           cost += this.data.dataCalculated.extraBlockCost;
         }
       }

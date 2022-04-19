@@ -55,7 +55,7 @@
       titleExpanded="Скрыть результаты:"
     >
       <result-block
-        :dataValue="this.resultData"
+        :dataValue="this.data.result"
       ></result-block>
     </vue-spoiler>
 
@@ -89,43 +89,6 @@ export default {
     personalDiscount
   },
   mixins: [MDataCalculator],
-  created() {
-    // this.data.dataInner = this.createBaseData();
-    // this.data.result = null;
-    // this.data.result = this.resultData;
-  },
-  beforeUpdate() {
-    // this.data.result = this.resultData;
-  },
-  data() {
-    return {
-
-    }
-  },
-  methods: {
-    createBaseData() {
-      return  {
-        name: '',
-        countBlocks: 0,
-        isLayoutPc: {
-          isDone: false,
-          name: 'Макет для ПК.',
-          id: this.getRandomId()
-        },
-        isLayoutTable: {
-          isDone: false,
-          name: 'Макет для Планшета.',
-          id: this.getRandomId()
-        },
-        isLayoutMobile: {
-          isDone: false,
-          name: 'Макет для Смартфона.',
-          id: this.getRandomId()
-        },
-        extraLayouts: [],
-      }
-    },
-  },
   computed: {
     costWorks() {
       let cost = this.data.dataCalculated.nominalCost;

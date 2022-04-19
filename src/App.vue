@@ -18,21 +18,18 @@
         ></Component>
     </div>
 
-    <div v-for="t in workList">
-      {{t.result}}
+    <div class="allResult" v-if="totalSumm > 0">
+      <h2>Список всех работ!</h2>
+      <template v-for="data in workList">
+        <result-block
+          class="w-25"
+          v-if="data.result !== null"
+          :dataValue="data.result"
+          :mainTitle="data.dataInner.name"
+        ></result-block>
+      </template>
+      <div class="text-info bg-dark p-1 w-25">Общая сумма заказа - {{totalSumm}}₽</div>
     </div>
-
-<!--    <div class="allResult" v-if="totalSumm > 0">-->
-<!--      <h2>Список всех работ!</h2>-->
-<!--      <template v-for="data in workList">-->
-<!--        <result-block-->
-<!--          v-if="data.result !== null"-->
-<!--          :dataValue="data.result"-->
-<!--          :mainTitle="data.dataInner.name"-->
-<!--        ></result-block>-->
-<!--      </template>-->
-<!--      <div>Общая сумма заказа - {{totalSumm}}₽</div>-->
-<!--    </div>-->
   </div>
 </template>
 
@@ -87,13 +84,9 @@ export default {
       this.currentTypeWork = '';
       this.selectedSelect = true;
     },
-    // updateResultData(value) {
-    // },
+
   },
   computed: {
-    // ...mapState({
-    //   dataListOut: state => state.dataListOut,
-    // }),
     ...mapState(['dataWorksList', 'totalSumm']),
     ...mapGetters(['listOut', 'selectList', 'workList']),
   },

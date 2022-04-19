@@ -1,32 +1,33 @@
 <template>
-  <div v-if="dataValue.costWorkTotalData > 0">
-    <h3>{{mainTitle}}</h3>
-    <div v-if="(dataValue.countWorksData)">Количество блоков: {{dataValue.countWorksData}}</div>
-    <template v-if="dataValue.allLayoutsData.length > 0">
-      <div>Будут реализованы следующие макеты: </div>
-      <div v-for="layout in dataValue.allLayoutsData">
-        {{layout}}
+  <div  class="result__block mb-2" v-if="dataValue.costWorkTotalData > 0">
+    <h4>{{mainTitle}}</h4>
+    <div class="text__block">
+      <div v-if="(dataValue.countWorksData)">Количество блоков: {{dataValue.countWorksData}}</div>
+      <div class="m-size pt-1 pb-2 " v-if="dataValue.allLayoutsData.length > 0">
+        <div>Будут реализованы следующие макеты: </div>
+        <div v-for="layout in dataValue.allLayoutsData">
+          {{layout}}
+        </div>
       </div>
-    </template>
-    <div>Внутренние сроки: {{dataValue.allWorksTimeInnerData}}</div>
-    <div>Сроки для клиента: {{dataValue.allWorksTimeOutData}}</div>
-    <div>{{dataValue.displayValue }}</div>
+      <div class="m-size">Внутренние сроки: {{dataValue.allWorksTimeInnerData}}</div>
+      <div class="m-size">Сроки для клиента: {{dataValue.allWorksTimeOutData}}</div>
+      <div class="m-size">{{dataValue.displayValue }}</div>
 
-    <div v-if="dataValue.discountType === 'present' && parseFloat(dataValue.discountValue) > 0">
-      Персональная скидка - {{dataValue.discountValue}}%
-    </div>
+      <div class="m-size text-warning bg-dark p-1" v-if="dataValue.discountType === 'present' && parseFloat(dataValue.discountValue) > 0">
+        Персональная скидка - {{dataValue.discountValue}}%
+      </div>
 
-    <div v-if="dataValue.discountType === 'cash' && parseFloat(dataValue.discountValue) > 0">
-      Персональная скидка - {{dataValue.discountValue}}₽
-    </div>
+      <div class="m-size text-warning bg-dark p-1" v-if="dataValue.discountType === 'cash' && parseFloat(dataValue.discountValue) > 0">
+        Персональная скидка - {{dataValue.discountValue}}₽
+      </div>
 
-    <div v-if="dataValue.discountType && parseFloat(dataValue.discountValue) > 0">
-      <p>Сумма без скидки - {{dataValue.costWorkData}}</p>
-      <p>Сумма персональной скидки за работу - {{dataValue.costWorkData - dataValue.costWorkInDiscountData}}₽</p>
-      Общая стоимость работ: {{dataValue.costWorkTotalData}}₽
+      <div v-if="dataValue.discountType && parseFloat(dataValue.discountValue) > 0">
+        <p class="m-size">Сумма без скидки - {{dataValue.costWorkData}}</p>
+        <p class="m-size text-warning bg-dark p-1">Сумма персональной скидки за работу - {{dataValue.costWorkData - dataValue.costWorkInDiscountData}}₽</p>
+        <div class="text-success ">Общая стоимость работ: {{dataValue.costWorkTotalData}}₽</div>
+      </div>
+      <div class="text-success" v-else-if="dataValue.costWorkData">Общая стоимость работы: {{dataValue.costWorkTotalData}}₽</div>
     </div>
-    <div v-else-if="dataValue.costWorkData">Общая стоимость работы: {{dataValue.costWorkTotalData}}₽</div>
-    <hr />
   </div>
 </template>
 
@@ -47,5 +48,14 @@ export default {
 </script>
 
 <style scoped>
-
+.m-size {
+  font-size: 0.8rem;
+}
+.result__block {
+  border-bottom: 1px solid black;
+  padding: 5px 0;
+}
+.text__block {
+  padding-left: 10px;
+}
 </style>

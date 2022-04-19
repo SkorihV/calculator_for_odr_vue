@@ -61,7 +61,7 @@ export default createStore({
                       },
                       extraLayouts: [],
                     }
-      state.dataWorksList.push(work);
+      state.dataWorksList.unshift(work);
     },
     addTotalSumm(state, summ) {
       state.totalSumm = summ;
