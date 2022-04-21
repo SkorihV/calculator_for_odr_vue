@@ -22,7 +22,7 @@
 
   </div>
   <div v-if="typeDiscount === 'present' || typeDiscount === 'cash'" class="input-group input-group-sm mb-3">
-    <input type="text" ref="inputDiscount" v-model="modelValue" @input="updateDiscount" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+    <input type="text" ref="inputDiscount" v-model.number="modelValue" @input="updateDiscount" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
   </div>
 </template>
 
@@ -41,7 +41,7 @@ export default {
       default: null
     },
     modelValue: {
-      type: String,
+      type: Number,
       default: null
     },
     typeDiscount: {
@@ -60,7 +60,12 @@ export default {
   },
   methods: {
     updateDiscount(e) {
-      this.$emit('update:modelValue', e.target.value);
+      if (isNaN(parseFloat(e.target.value))) {
+        e.target.value = '';
+        this.$emit('update:modelValue', 0);
+      } else {
+        this.$emit('update:modelValue', parseFloat(e.target.value));
+      }
     }
   },
   computed: {

@@ -44,13 +44,14 @@
     ></vue-input-add>
 
     <personal-discount
+      v-if="data.dataCalculated.isPersonalDiscount"
       v-model="discountValue"
       v-model:typeDiscount="discountType"
     ></personal-discount>
 
     <vue-spoiler
       @click.stop
-      v-if="data.result.costWorkData"
+      v-if="costTotal"
       title="Показать результаты:"
       titleExpanded="Скрыть результаты:"
     >
@@ -91,17 +92,17 @@ export default {
   mixins: [MDataCalculator],
   computed: {
     costWorks() {
-      let cost = this.data.dataCalculated.nominalCost;
+      let cost = parseFloat(this.data.dataCalculated.nominalCost);
 
       if (this.allLayouts.length > 1 ) {
         for (let i = 1; i < this.allLayouts.length; i++) {
-          cost += this.data.dataCalculated.extraLayoutCost;
+          cost += parseFloat(this.data.dataCalculated.extraLayoutCost);
         }
       }
 
       if (this.countBlocks > 0) {
         for (let i = 0; i < this.data.dataInner.countBlocks; i++) {
-          cost += this.data.dataCalculated.extraBlockCost;
+          cost += parseFloat(this.data.dataCalculated.extraBlockCost);
         }
       }
 

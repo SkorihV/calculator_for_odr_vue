@@ -2,7 +2,7 @@
   <div class="form-check form-switch">
     <input class="form-check-input"
            type="checkbox"
-           @change="checked"
+           @change.stop="checked"
            :value="value"
            :checked="modelValue"
            :id="thisId">
@@ -21,7 +21,11 @@ export default {
     },
     thisId: [Number],
     value: String,
-    modelValue: Boolean
+    modelValue: Boolean,
+    calcType: {
+      type: String,
+      default: null
+    }
   },
   data() {
     return {
@@ -31,6 +35,17 @@ export default {
   methods: {
     checked(e) {
       this.$emit('update:modelValue', e.target.checked)
+    }
+  },
+  watch: {
+    modelValue() {
+      if (this.calcType === "layoutForShop") {
+        if (this.modelValue) {
+          this.$store.dispatch("uploadAddLayoutIdForShop", this.thisId);
+        } else {
+          this.$store.dispatch("uploadRemoveLayoutIdForShop", this.thisId);
+        }
+      }
     }
   }
 }

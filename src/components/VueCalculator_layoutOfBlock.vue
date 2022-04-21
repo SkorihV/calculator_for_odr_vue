@@ -48,13 +48,13 @@
     ></vue-input-add>
 
     <personal-discount
+      v-if="data.dataCalculated.isPersonalDiscount"
       v-model="discountValue"
       v-model:typeDiscount="discountType"
     ></personal-discount>
-
     <vue-spoiler
       @click.stop
-      v-if="data.result.costWorkData"
+      v-if="costTotal"
       title="Показать результаты:"
       titleExpanded="Скрыть результаты:"
     >

@@ -2,11 +2,11 @@
   <div  class="result__block mb-2" :class="{isHover: isHovered}" v-if="dataValue.costWorkTotalData > 0">
     <h4>{{mainTitle}}</h4>
     <div class="text__block">
-      <div v-if="(dataValue.countWorksData)">Количество блоков: {{dataValue.countWorksData}}</div>
+      <div class="m-size" v-if="(dataValue.countWorksData)">Количество блоков: {{dataValue.countWorksData}}</div>
       <div class="m-size pt-1 pb-2 " v-if="dataValue.allLayoutsData.length > 0">
         <div>Будут реализованы следующие макеты: </div>
         <div v-for="layout in dataValue.allLayoutsData">
-          {{layout}}
+          {{layout.name}}
         </div>
       </div>
       <div class="m-size">Внутренние сроки: {{dataValue.allWorksTimeInnerData}}</div>
@@ -22,16 +22,21 @@
       </div>
 
       <div v-if="dataValue.discountType && parseFloat(dataValue.discountValue) > 0">
-        <p class="m-size">Сумма без скидки - {{dataValue.costWorkData}}</p>
+        <p class="m-size">Цена без скидки - {{dataValue.costWorkData}}</p>
         <p class="m-size text-warning bg-dark p-1">Сумма персональной скидки за работу - {{dataValue.costWorkData - dataValue.costWorkInDiscountData}}₽</p>
         <div class="text-success ">Общая стоимость работ: {{dataValue.costWorkTotalData}}₽</div>
       </div>
-      <div class="text-success" v-else-if="dataValue.costWorkData">Общая стоимость работы: {{dataValue.costWorkTotalData}}₽</div>
+      <div class="text-success" v-else-if="dataValue.costWorkData">
+        <p>Общая стоимость работы: {{dataValue.costWorkTotalData}}₽</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+
+import {mapGetters} from "vuex";
+
 export default {
   name: 'result-block',
   props: {
@@ -47,7 +52,7 @@ export default {
       type:Boolean,
       require: false
     }
-  }
+  },
 }
 </script>
 

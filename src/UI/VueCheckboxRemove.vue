@@ -1,7 +1,7 @@
 <template>
   <div class="form-check form-switch form-switch-layout">
     <input class="form-check-input" @change="checked" type="checkbox" :id="thisId">
-    <label class="form-check-label"  :for="thisId">{{labelText}}</label>
+    <label class="form-check-label"   :for="thisId">{{labelText}}</label>
     <button
       type="button"
       class="btn btn-outline-secondary small-btn trash__btn"
@@ -19,7 +19,12 @@ export default {
       type: String,
       require: true
     },
-    thisId:[Number]
+    thisId:[Number],
+    modelValue: Boolean,
+    calcType: {
+      type: String,
+      default: null
+    }
   },
   data() {
     return {
@@ -31,6 +36,17 @@ export default {
     },
     removeData(e) {
       this.$emit('removeData', this.thisId)
+    }
+  },
+  watch: {
+    modelValue() {
+      if (this.calcType === "layoutForShop") {
+        if (this.modelValue) {
+          this.$store.dispatch("uploadAddLayoutIdForShop", this.thisId);
+        } else {
+          this.$store.dispatch("uploadRemoveLayoutIdForShop", this.thisId);
+        }
+      }
     }
   }
 }

@@ -3,11 +3,12 @@ import {createStore} from 'vuex';
 
 export default createStore({
   state: {
-    dataListOut: window.staticStore.dataOut,
-    dataWorksList: [],
-    totalSumm: 0,
+    dataWorksList:  [],
+    dataListOut:    window.staticStore.dataOut,
+    totalSumm:      0,
+    allLayoutIdForShops: [],
   },
-  getters:{
+  getters: {
     listOut(state) {
       return state.dataListOut;
     },
@@ -15,8 +16,8 @@ export default createStore({
       return getters.listOut.map(item => {
         return {
           workName: item.dataCalculated.workName,
-          type:     item.dataCalculated.type,
-          prompt:   item.dataCalculated.prompt
+          prompt:   item.dataCalculated.prompt,
+          type:     item.dataCalculated.type
         }
       });
     },
@@ -25,152 +26,130 @@ export default createStore({
     },
     work: state => Id => {
       return state.dataWorksList.find(work => work.id === Id);
+    },
+    layoutIdForShops(state) {
+      return state.allLayoutIdForShops;
+    },
+    allTimeInner(state) {
+      return state.dataWorksList.reduce((summ, work) => {
+        return summ + work.result.allWorksTimeInnerData;
+      }, 0)
+    },
+    allTimeOut(state) {
+      return state.dataWorksList.reduce((summ, work) => {
+        return summ + work.result.allWorksTimeOutData;
+      }, 0)
     }
   },
   mutations: {
-    addNewWork(state,work) {
+    addNewWork: (state,work) => {
       work.isHovered = false;
       work.result = {
-                  allLayoutsData: [],
-                  costWorkData: 0,
-                  costWorkInDiscountData: 0,
-                  countWorksData: 0,
-                  costWorkTotalData: 0,
-                  allWorksTimeInnerData: 0,
-                  allWorksTimeOutData: 0,
-                  blockName: 0,
-                  discountValue: 0,
-                  discountType: 0
-                };
+        costWorkInDiscountData: 0,
+        allWorksTimeInnerData:  0,
+        allWorksTimeOutData:    0,
+        costWorkTotalData:      0,
+        allLayoutsData:         [],
+        countWorksData:         0,
+        discountValue:          0,
+        costWorkData:           0,
+        discountType:           0,
+        blockName:              0
+      };
       work.dataInner = {
-                      name: '',
-                        countBlocks: 0,
-                        isLayoutPc: {
-                        isDone: false,
-                          name: 'Макет для ПК.',
-                          id: Math.random()
-                      },
-                      isLayoutTable: {
-                        isDone: false,
-                          name: 'Макет для Планшета.',
-                          id: Math.random()
-                      },
-                      isLayoutMobile: {
-                        isDone: false,
-                          name: 'Макет для Смартфона.',
-                          id: Math.random()
-                      },
-                      extraLayouts: [],
-                    }
+        name: '',
+          countBlocks: 0,
+          isLayoutPc: {
+          isDone: false,
+            name: 'Макет для ПК.',
+            id: Math.random()
+        },
+        isLayoutTable: {
+          isDone: false,
+            name: 'Макет для Планшета.',
+              id: Math.random()
+        },
+        isLayoutMobile: {
+          isDone: false,
+            name: 'Макет для Смартфона.',
+              id: Math.random()
+        },
+        extraLayouts: [],
+      };
       state.dataWorksList.unshift(work);
     },
-    addTotalSumm(state, summ) {
+    addTotalSumm: (state, summ) => {
       state.totalSumm = summ;
     },
-    deleteCalc(state, id) {
+    deleteCalc: (state, id) => {
       state.dataWorksList = state.dataWorksList.filter(calc => {
         return calc.id !== id;
       });
     },
-    updateCountWorkData(state, data) {
+    updateCountWorkData: (state, data) => {
       state.dataWorksList.forEach(item => {
         if (item.id === data.id) {
           item.dataInner.countBlocks = data.value;
         }
       })
     },
-    createInnerData(state, data) {
+    createInnerData: (state, data) => {
       for (let i = 0; i < state.dataWorksList.length; i++ ) {
         if (state.dataWorksList[i].id === data.id) {
           state.dataWorksList[i].dataInner = data.data;
         }
       }
     },
-    updateAllLayoutsData(state, data) {
-      let work = state.dataWorksList.find(work => work.id === data.id);
-      work.result.allLayoutsData = data.allLayouts;
-    },
-    updateCostWorkData(state, data) {
-      let work = state.dataWorksList.find(work => work.id === data.id);
-      work.result.costWorkData = data.costWorkData;
-    },
-    updateCostWorkInDiscountData(state, data) {
-      let work = state.dataWorksList.find(work => work.id === data.id);
-      work.result.costWorkInDiscountData = data.costWorkInDiscountData;
-    },
-    updateCountWorksData(state, data) {
-      let work = state.dataWorksList.find(work => work.id === data.id);
-      work.result.countWorksData = data.countWorksData;
-    },
-    updateCostWorkTotalData(state, data) {
-      let work = state.dataWorksList.find(work => work.id === data.id);
-      work.result.costWorkTotalData = data.costWorkTotalData;
-    },
-    updateAllWorksTimeInnerData(state, data) {
-      let work = state.dataWorksList.find(work => work.id === data.id);
-      work.result.allWorksTimeInnerData = data.allWorksTimeInnerData;
-    },
-    updateAllWorksTimeOutData(state, data) {
-      let work = state.dataWorksList.find(work => work.id === data.id);
-      work.result.allWorksTimeOutData = data.allWorksTimeOutData;
-    },
-    updateBlockName(state, data) {
-      let work = state.dataWorksList.find(work => work.id === data.id);
-      work.result.blockName = data.blockName;
-    },
-    updateDiscountValue(state, data) {
-      let work = state.dataWorksList.find(work => work.id === data.id);
-      work.result.discountValue = data.discountValue;
-    },
-    updateDiscountType(state, data) {
-      let work = state.dataWorksList.find(work => work.id === data.id);
-      work.result.discountType = data.discountType;
-    },
-    updateIsHoveredOn(state, id) {
+    updateIsHoveredOn: (state, id) => {
       let work = state.dataWorksList.find(work => work.id === id);
-      work.isHovered = true;
+      if (work) {
+        work.isHovered = true;
+
+      }
     },
-    updateIsHoveredOff(state, id) {
+    updateIsHoveredOff: (state, id) => {
       let work = state.dataWorksList.find(work => work.id === id);
-      work.isHovered = false;
+      if (work) {
+        work.isHovered = false;
+      }
+    },
+    updateAllDataResult: (state, data) => {
+      let work = state.dataWorksList.find(work => work.id === data.id);
+      work.result.costWorkInDiscountData  = data.costWorkInDiscountData;
+      work.result.allWorksTimeInnerData   = data.allWorksTimeInnerData;
+      work.result.allWorksTimeOutData     = data.allWorksTimeOutData;
+      work.result.costWorkTotalData       = data.costWorkTotalData;
+      work.result.allLayoutsData          = data.allLayouts;
+      work.result.countWorksData          = data.countWorksData;
+      work.result.discountValue           = data.discountValue;
+      work.result.costWorkData            = data.costWorkData;
+      work.result.discountType            = data.discountType;
+      work.result.blockName               = data.blockName;
+    },
+    addLayoutForShops(state, layoutId){
+      state.allLayoutIdForShops.push(layoutId)
+    },
+    removeLayoutIdForShop(state, layoutId) {
+      state.allLayoutIdForShops = state.allLayoutIdForShops.filter(layout => {
+        return layout !== layoutId;
+      })
     }
   },
   actions: {
-    updatedAllLayoutsData(context, data) {
-      context.commit('updateAllLayoutsData', data);
-    },
-    updatedCostWorkData(context, data) {
-      context.commit('updateCostWorkData', data);
-    },
-    updatedCostWorkInDiscountData(context, data) {
-      context.commit('updateCostWorkInDiscountData', data);
-    },
-    updatedCountWorksData(context, data) {
-      context.commit('updateCountWorksData', data);
-    },
-    updatedCostWorkTotalData(context, data) {
-      context.commit('updateCostWorkTotalData', data);
-    },
-    updatedAllWorksTimeInnerData(context, data) {
-      context.commit('updateAllWorksTimeInnerData', data);
-    },
-    updatedAllWorksTimeOutData(context, data) {
-      context.commit('updateAllWorksTimeOutData', data);
-    },
-    updatedBlockName(context, data) {
-      context.commit('updateBlockName', data);
-    },
-    updatedDiscountValue(context, data) {
-      context.commit('updateDiscountValue', data);
-    },
-    updatedDiscountType(context, data) {
-      context.commit('updateDiscountType', data);
+    updatedAllDataResult(context, data) {
+      context.commit('updateAllDataResult', data);
     },
     updatedIsHoveredOn(context, id) {
       context.commit('updateIsHoveredOn', id);
     },
     updatedIsHoveredOff(context, id) {
       context.commit('updateIsHoveredOff', id);
+    },
+    uploadAddLayoutIdForShop({commit}, layoutId){
+      commit('addLayoutForShops', layoutId);
+    },
+    uploadRemoveLayoutIdForShop({commit}, layoutId) {
+      commit('removeLayoutIdForShop', layoutId);
     }
   },
   modules: {},

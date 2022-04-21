@@ -7,7 +7,7 @@
         v-model:selectedSelect="selectedSelect"
         @changeSelectOut="changedTypeWork"
       ></vue-select>
-      <div v-if="currentTypeWork.length > 5" class="btn-group add__work__btn" role="group" aria-label="Basic mixed styles example">
+      <div v-if="currentTypeWork.length > 3" class="btn-group add__work__btn" role="group" aria-label="Basic mixed styles example">
         <button @click.stop="addWork" type="button" class="btn btn-success">Добавить работу в список</button>
       </div>
     </div>
@@ -26,7 +26,7 @@
 
       <div class="allResult" v-if="totalSumm > 0">
         <h2>Список всех работ!</h2>
-          <template v-for="data in workList">
+          <template v-for="data in workList" :key="data.id">
             <result-block
               :isHovered="data.isHovered"
               v-if="data.result !== null"
@@ -34,7 +34,11 @@
               :mainTitle="data.dataInner.name"
             ></result-block>
           </template>
-        <div class="text-info bg-dark p-1">Общая сумма заказа - {{totalSumm}}₽</div>
+        <div class="text-info bg-dark p-1">
+          <span>Общие внутренние сроки: {{allTimeInnerCount}}</span><br/>
+          <span>Общие сроки для клиента: {{allTimeOutCount}}</span><br/>
+          <span>Общая сумма заказа - {{totalSumm}}₽</span><br/>
+        </div>
       </div>
     </div>
   </div>
@@ -69,7 +73,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['addNewWork', 'addTotalSumm', 'deleteCalc']),
+    ...mapMutations(['addNewWork', 'addTotalSumm', 'deleteCalc',]),
     changedTypeWork(value) {
       this.currentTypeWork = value;
     },
@@ -91,11 +95,16 @@ export default {
       this.currentTypeWork = '';
       this.selectedSelect = true;
     },
-
   },
   computed: {
     ...mapState(['dataWorksList', 'totalSumm']),
-    ...mapGetters(['listOut', 'selectList', 'workList']),
+    ...mapGetters(['listOut', 'selectList', 'workList', 'layoutIdForShops', 'allTimeInner', 'allTimeOut']),
+    allTimeInnerCount() {
+      return this.allTimeInner;
+    },
+    allTimeOutCount() {
+      return this.allTimeOut;
+    }
   },
   watch: {
     workList: {

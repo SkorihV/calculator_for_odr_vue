@@ -13,18 +13,21 @@
 <!--    ></vue-input-number>-->
 
     <vue-checkbox
+      :calcType="data.dataCalculated.type"
       :thisId="data.dataInner.isLayoutPc.id"
       :labelText="data.dataInner.isLayoutPc.name"
       v-model="data.dataInner.isLayoutPc.isDone"
     ></vue-checkbox>
 
     <vue-checkbox
+      :calcType="data.dataCalculated.type"
       :thisId="data.dataInner.isLayoutTable.id"
       :labelText="data.dataInner.isLayoutTable.name"
       v-model="data.dataInner.isLayoutTable.isDone"
     ></vue-checkbox>
 
     <vue-checkbox
+      :calcType="data.dataCalculated.type"
       :thisId="data.dataInner.isLayoutMobile.id"
       :labelText="data.dataInner.isLayoutMobile.name"
       v-model="data.dataInner.isLayoutMobile.isDone"
@@ -32,6 +35,7 @@
 
     <template v-for="layout in data.dataInner.extraLayouts">
       <vue-checkbox-remove
+        :calcType="data.dataCalculated.type"
         :labelText="layout.name"
         v-model="layout.isDone"
         :thisId="layout.id"
@@ -44,13 +48,14 @@
     ></vue-input-add>
 
     <personal-discount
+      v-if="data.dataCalculated.isPersonalDiscount"
       v-model="discountValue"
       v-model:typeDiscount="discountType"
     ></personal-discount>
 
     <vue-spoiler
       @click.stop
-      v-if="data.result.costWorkData"
+      v-if="costTotal"
       title="Показать результаты:"
       titleExpanded="Скрыть результаты:"
     >
@@ -74,6 +79,7 @@ import deleteCalc from "@/UI/VueDeleteBtn";
 import VueSpoiler from "@/UI/VueSpoiler";
 import resultBlock from "@/UI/VueResultBlock";
 import personalDiscount from "@/UI/VuePersonalDiscount";
+import {mapGetters} from "vuex";
 
 export default {
   name:'layoutOfBlock',
@@ -88,24 +94,83 @@ export default {
     resultBlock,
     personalDiscount
   },
+  data() {
+    return {
+      isFirst: false,
+    }
+  },
   mixins: [MDataCalculator],
   computed: {
+    ...mapGetters(['layoutIdForShops']),
     costWorks() {
-      let cost = this.data.dataCalculated.nominalCost;
+      let cost = 0;
 
-      if (this.allLayouts.length > 1 ) {
-        for (let i = 1; i < this.allLayouts.length; i++) {
-          cost += this.data.dataCalculated.extraLayoutCost;
+      if( this.allLayouts.length) {
+        let isLayoutFirst = this.allLayouts.filter(item => item.id === this.layoutIdForShops[0]);
+        if (isLayoutFirst.length) {
+          cost += parseFloat(this.data.dataCalculated.nominalCost);
+          this.isFirst = true;
+        } else {
+          this.isFirst = false;
         }
       }
 
-      if (this.allLayouts.length === 0 ) {
-        cost = 0
+      if (this.allLayouts.length > 1 && this.isFirst) {
+        for (let i = 1; i < this.allLayouts.length; i++) {
+          cost += parseFloat(this.data.dataCalculated.extraLayoutCost);
+        }
+      } else if (this.allLayouts.length && !this.isFirst) {
+        for (let i = 0; i < this.allLayouts.length; i++) {
+          cost += parseFloat(this.data.dataCalculated.extraLayoutCost);
+        }
+      }
+
+      if (!this.allLayouts.length) {
+        cost = 0;
+        this.isFirst = false;
         return cost;
       }
+
       return cost;
     },
-  }
+    allWorksTimeInner() {
+      if (!this.costWorks) {
+        return 0;
+      }
+      let innerTime = 0;
+
+      if (this.isFirst) {
+        innerTime = parseInt(this.data.dataCalculated.innerTime);
+      } else {
+        innerTime = parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
+      }
+      if (this.allLayouts.length > 1) {
+        for (let i = 1; i < this.allLayouts.length; i++) {
+          innerTime += parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
+        }
+      }
+      return innerTime;
+    },
+    allWorksTimeOut() {
+      if (!this.costWorks) {
+        return 0;
+      }
+      let outerTime = 0;
+
+      if (this.isFirst) {
+        outerTime = parseInt(this.data.dataCalculated.outerTime);
+      } else {
+        outerTime = parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
+      }
+
+      if (this.allLayouts.length > 1) {
+        for (let i = 1; i < this.allLayouts.length; i++) {
+          outerTime += parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
+        }
+      }
+      return outerTime;
+    },
+  },
 }
 </script>
 

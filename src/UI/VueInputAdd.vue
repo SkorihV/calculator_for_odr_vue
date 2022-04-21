@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     returnValue() {
-      if (this.inputValue !== null && this.inputValue.length > 5) {
+      if (this.inputValue !== null && this.inputValue.length > 3) {
         this.$emit('returnValue', this.inputValue)
         this.inputValue = '';
       }

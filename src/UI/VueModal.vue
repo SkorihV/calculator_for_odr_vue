@@ -19,8 +19,7 @@
           <h5 class="modal-title" id="exampleModalLabel">Особенности работы</h5>
           <button @click="hideModal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          {{textPrompt}}
+        <div class="modal-body" v-html="textPrompt">
         </div>
         <div class="modal-footer">
           <button @click="hideModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ок</button>
