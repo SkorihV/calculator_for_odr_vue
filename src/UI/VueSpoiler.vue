@@ -150,14 +150,14 @@ export default {
 
 .vue-spoiler .content {
   padding: 15px;
-  position: absolute;
-  top: 100%;
+  /*position: absolute;*/
+  /*top: 100%;*/
   width: 100%;
   color: black;
   border-radius: 5px;
   border: 1px solid #cccccc;
   background-color: white;
-  z-index: 10;
+  /*z-index: 10;*/
 }
 
 /* Expand animation */

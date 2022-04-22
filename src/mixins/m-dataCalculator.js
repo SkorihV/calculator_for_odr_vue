@@ -102,6 +102,7 @@ export default {
         costTotal = costTotal - (costTotal - this.costWorkInDiscount);
       }
       if (costTotal < 0 ) { costTotal = 0;}
+
       return costTotal;
     },
     allLayouts() {
@@ -163,7 +164,9 @@ export default {
   watch: {
     costWorks() {
       this.updateResultData();
+    },
+    discountValue() {
+      this.updateResultData();
     }
   },
-
 }

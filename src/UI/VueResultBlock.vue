@@ -20,8 +20,7 @@
       <div class="m-size text-warning bg-dark p-1" v-if="dataValue.discountType === 'cash' && parseFloat(dataValue.discountValue) > 0">
         Персональная скидка - {{dataValue.discountValue}}₽
       </div>
-
-      <div v-if="dataValue.discountType && parseFloat(dataValue.discountValue) > 0">
+      <div v-if="dataValue.discountType && dataValue.discountValue > 0">
         <p class="m-size">Цена без скидки - {{dataValue.costWorkData}}</p>
         <p class="m-size text-warning bg-dark p-1">Сумма персональной скидки за работу - {{dataValue.costWorkData - dataValue.costWorkInDiscountData}}₽</p>
         <div class="text-success ">Общая стоимость работ: {{dataValue.costWorkTotalData}}₽</div>

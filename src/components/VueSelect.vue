@@ -1,7 +1,7 @@
 <template>
   <div class="select__wrapper mb-3">
     <div class="input-group">
-      <label class="input-group-text" for="inputGroupSelect01">Выбор работы: </label>
+      <label class="input-group-text" for="inputGroupSelect01">Добавить вид работы:</label>
       <select
         @change="changeSelect"
         class="form-select" aria-label="Вид работы"
@@ -24,7 +24,6 @@
         :textPrompt="select.prompt"
       ></vue-modal>
     </template>
-
   </div>
 </template>
 
