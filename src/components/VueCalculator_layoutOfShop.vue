@@ -1,7 +1,13 @@
 <template>
   <keep-alive>
   <div class="calculator__wrapper" @mouseover="isHoveredOn" @mouseleave="isHoveredOff">
-    <h4>{{data.dataCalculated.workName}}</h4>
+    <div class="calculator__title">{{data.dataCalculated.workName}}
+      <vue-modal
+        typeWork="true"
+        currentType="true"
+        :textPrompt="data.dataCalculated.prompt"
+      ></vue-modal>
+    </div>
     <vue-input
       v-model="data.dataInner.name"
       title="Название работы"
@@ -80,6 +86,7 @@ import VueSpoiler from "@/UI/VueSpoiler";
 import resultBlock from "@/UI/VueResultBlock";
 import personalDiscount from "@/UI/VuePersonalDiscount";
 import {mapGetters} from "vuex";
+import VueModal from "@/UI/VueModal";
 
 export default {
   name:'layoutOfBlock',
@@ -92,12 +99,8 @@ export default {
     deleteCalc,
     VueSpoiler,
     resultBlock,
-    personalDiscount
-  },
-  data() {
-    return {
-      isFirst: false,
-    }
+    personalDiscount,
+    VueModal
   },
   mixins: [MDataCalculator],
   computed: {
@@ -105,70 +108,17 @@ export default {
     costWorks() {
       let cost = 0;
 
-      if( this.allLayouts.length) {
-        let isLayoutFirst = this.allLayouts.filter(item => item.id === this.layoutIdForShops[0]);
-        if (isLayoutFirst.length) {
-          cost += parseFloat(this.data.dataCalculated.nominalCost);
-          this.isFirst = true;
-        } else {
-          this.isFirst = false;
-        }
-      }
-
-      if (this.allLayouts.length > 1 && this.isFirst) {
-        for (let i = 1; i < this.allLayouts.length; i++) {
-          cost += parseFloat(this.data.dataCalculated.extraLayoutCost);
-        }
-      } else if (this.allLayouts.length && !this.isFirst) {
-        for (let i = 0; i < this.allLayouts.length; i++) {
+      if (this.allLayouts.length === 1) {
+        cost += parseFloat(this.data.dataCalculated.nominalCost);
+      } else if (this.allLayouts.length > 1) {
+        for (let i = 1; i <= this.allLayouts.length; i++) {
           cost += parseFloat(this.data.dataCalculated.extraLayoutCost);
         }
       }
-
       if (!this.allLayouts.length) {
         cost = 0;
-        this.isFirst = false;
-        return cost;
       }
-
       return cost;
-    },
-    allWorksTimeInner() {
-      if (!this.costWorks) {
-        return 0;
-      }
-      let innerTime = 0;
-
-      if (this.isFirst) {
-        innerTime = parseInt(this.data.dataCalculated.innerTime);
-      } else {
-        innerTime = parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
-      }
-      if (this.allLayouts.length > 1) {
-        for (let i = 1; i < this.allLayouts.length; i++) {
-          innerTime += parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
-        }
-      }
-      return innerTime;
-    },
-    allWorksTimeOut() {
-      if (!this.costWorks) {
-        return 0;
-      }
-      let outerTime = 0;
-
-      if (this.isFirst) {
-        outerTime = parseInt(this.data.dataCalculated.outerTime);
-      } else {
-        outerTime = parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
-      }
-
-      if (this.allLayouts.length > 1) {
-        for (let i = 1; i < this.allLayouts.length; i++) {
-          outerTime += parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
-        }
-      }
-      return outerTime;
     },
   },
 }
@@ -180,6 +130,9 @@ export default {
   display: flex;
   flex-direction: column;
   flex: 0 1 30%;
+}
+.calculator__title {
+  display: flex;
 }
 @media all and (max-width:1250px) {
   .calculator__wrapper {

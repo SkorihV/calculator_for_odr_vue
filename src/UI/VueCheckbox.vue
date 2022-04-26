@@ -41,9 +41,9 @@ export default {
     modelValue() {
       if (this.calcType === "layoutForShop") {
         if (this.modelValue) {
-          this.$store.dispatch("uploadAddLayoutIdForShop", this.thisId);
+          this.$store.dispatch("uploadAddLayoutIdForShop", {nameDataArray:  'allLayoutIdForShops', layoutId: this.thisId});
         } else {
-          this.$store.dispatch("uploadRemoveLayoutIdForShop", this.thisId);
+          this.$store.dispatch("uploadRemoveLayoutIdForShop", {nameDataArray:  'allLayoutIdForShops', layoutId: this.thisId});
         }
       }
     }

@@ -1,7 +1,13 @@
 <template>
   <keep-alive>
   <div class="calculator__wrapper" @mouseover="isHoveredOn" @mouseleave="isHoveredOff">
-    <h4>{{data.dataCalculated.workName}}</h4>
+    <div class="calculator__title">{{data.dataCalculated.workName}}
+      <vue-modal
+        typeWork="true"
+        currentType="true"
+        :textPrompt="data.dataCalculated.prompt"
+      ></vue-modal>
+    </div>
     <vue-input
       v-model="data.dataInner.name"
       title="Название работы"
@@ -9,7 +15,7 @@
 
     <vue-input-number
       :calcId="data.id"
-      title="Количество дополнительных доработок"
+      :title="data.dataCalculated.extraWorkName"
     ></vue-input-number>
 
     <vue-checkbox
@@ -56,6 +62,7 @@
       titleExpanded="Скрыть результаты:"
     >
       <result-block
+        :extraWorkName="data.dataCalculated.extraWorkName"
         :dataValue="this.data.result"
       ></result-block>
     </vue-spoiler>
@@ -75,6 +82,7 @@ import deleteCalc from "@/UI/VueDeleteBtn";
 import VueSpoiler from "@/UI/VueSpoiler";
 import resultBlock from "@/UI/VueResultBlock";
 import personalDiscount from "@/UI/VuePersonalDiscount";
+import VueModal from "@/UI/VueModal";
 
 export default {
   name: 'titleForBusiness',
@@ -87,7 +95,8 @@ export default {
     deleteCalc,
     VueSpoiler,
     resultBlock,
-    personalDiscount
+    personalDiscount,
+    VueModal
   },
   mixins: [MDataCalculator],
   computed: {
@@ -120,7 +129,9 @@ export default {
   display: flex;
   flex-direction: column;
   flex: 0 1 30%;
-
+}
+.calculator__title {
+  display: flex;
 }
 @media all and (max-width:1250px) {
   .calculator__wrapper {

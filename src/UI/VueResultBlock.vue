@@ -2,7 +2,7 @@
   <div  class="result__block mb-2" :class="{isHover: isHovered}" v-if="dataValue.costWorkTotalData > 0">
     <h4>{{mainTitle}}</h4>
     <div class="text__block">
-      <div class="m-size" v-if="(dataValue.countWorksData)">Количество блоков: {{dataValue.countWorksData}}</div>
+      <div class="m-size" v-if="(dataValue.countWorksData) && extraWorkName.length > 0">{{extraWorkName}} {{dataValue.countWorksData}}</div>
       <div class="m-size pt-1 pb-2 " v-if="dataValue.allLayoutsData.length > 0">
         <div>Будут реализованы следующие макеты: </div>
         <div v-for="layout in dataValue.allLayoutsData">
@@ -50,6 +50,10 @@ export default {
     isHovered: {
       type:Boolean,
       require: false
+    },
+    extraWorkName: {
+      type: String,
+      default: ''
     }
   },
 }

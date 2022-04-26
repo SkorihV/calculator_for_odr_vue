@@ -28,6 +28,7 @@
         <h2>Список всех работ!</h2>
           <template v-for="data in workList" :key="data.id">
             <result-block
+              :extraWorkName="data.dataCalculated.extraWorkName"
               :isHovered="data.isHovered"
               v-if="data.result !== null"
               :dataValue="data.result"

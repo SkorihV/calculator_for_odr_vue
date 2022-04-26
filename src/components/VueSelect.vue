@@ -15,15 +15,6 @@
         >{{ select.workName }}</option>
       </select>
     </div>
-    <template v-if="currentTypeWork && selectedSelect === false">
-      <vue-modal
-        v-for="(select, index) in selectList"
-        :key="index"
-        :typeWork="select.type"
-        :currentType="currentTypeWork"
-        :textPrompt="select.prompt"
-      ></vue-modal>
-    </template>
   </div>
 </template>
 

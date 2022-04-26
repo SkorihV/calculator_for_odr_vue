@@ -7,6 +7,9 @@ export default createStore({
     dataListOut:    window.staticStore.dataOut,
     totalSumm:      0,
     allLayoutIdForShops: [],
+    allLayoutIdForBlocks: [],
+    allLayoutIdForSimple: [],
+    allLayoutIdForBusiness: [],
   },
   getters: {
     listOut(state) {
@@ -126,11 +129,13 @@ export default createStore({
       work.result.discountType            = data.discountType;
       work.result.blockName               = data.blockName;
     },
-    addLayoutForShops(state, layoutId){
-      state.allLayoutIdForShops.push(layoutId)
+    addLayoutForShops(state, data){
+      let {nameDataArray, layoutId} = data;
+      state[nameDataArray].push(layoutId)
     },
-    removeLayoutIdForShop(state, layoutId) {
-      state.allLayoutIdForShops = state.allLayoutIdForShops.filter(layout => {
+    removeLayoutIdForShop(state, data) {
+      let {nameDataArray, layoutId} = data;
+      state[nameDataArray] = state[nameDataArray].filter(layout => {
         return layout !== layoutId;
       })
     }
@@ -145,11 +150,11 @@ export default createStore({
     updatedIsHoveredOff(context, id) {
       context.commit('updateIsHoveredOff', id);
     },
-    uploadAddLayoutIdForShop({commit}, layoutId){
-      commit('addLayoutForShops', layoutId);
+    uploadAddLayoutIdForShop({commit}, data){
+      commit('addLayoutForShops', data);
     },
-    uploadRemoveLayoutIdForShop({commit}, layoutId) {
-      commit('removeLayoutIdForShop', layoutId);
+    uploadRemoveLayoutIdForShop({commit}, data) {
+      commit('removeLayoutIdForShop', data);
     }
   },
   modules: {},

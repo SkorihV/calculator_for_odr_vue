@@ -1,3 +1,5 @@
+import {mapGetters, mapState} from "vuex";
+
 export default {
   props: {
     data: {
@@ -7,6 +9,8 @@ export default {
   },
   beforeUpdate() {
     // this.updateResultData();
+  },
+  mounted() {
   },
   data() {
     return {
@@ -55,9 +59,10 @@ export default {
     },
     isHoveredOff() {
       this.$store.dispatch('updatedIsHoveredOff', this.data.id)
-    }
+    },
   },
   computed: {
+    ...mapGetters(['layoutIdForShops', 'workList']),
     costWorks() {
       let cost = 0;
       if (this.data.dataInner.countBlocks === 0 || this.allLayouts.length === 0 ) {
@@ -124,29 +129,24 @@ export default {
       return layouts;
     },
     allWorksTimeInner() {
-      if (!this.costWorks) {
-        return 0;
-      }
-      let innerTime = parseInt(this.data.dataCalculated.innerTime);
-      if (this.allLayouts.length > 1) {
-        for (let i = 1; i < this.allLayouts.length; i++) {
-          innerTime += parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
-        }
-      }
-      return innerTime;
-    },
-    allWorksTimeOut() {
-      if (!this.costWorks) {
-        return 0;
-      }
-      let innerTime = parseInt(this.data.dataCalculated.outerTime);
+      let timeInner = parseInt(this.data.dataCalculated.innerTime);
 
       if (this.allLayouts.length > 1) {
         for (let i = 1; i < this.allLayouts.length; i++) {
-          innerTime += parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
+          timeInner += parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
         }
       }
-      return innerTime;
+      return timeInner;
+    },
+    allWorksTimeOut() {
+      let outerTime = parseInt(this.data.dataCalculated.outerTime);
+
+      if (this.allLayouts.length > 1) {
+        for (let i = 1; i < this.allLayouts.length; i++) {
+          outerTime += parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
+        }
+      }
+      return outerTime;
     },
     blockName() {
       return this.data.dataInner.name;
@@ -162,11 +162,11 @@ export default {
     }
   },
   watch: {
-    costWorks() {
-      this.updateResultData();
+    costTotal() {
+        this.updateResultData();
     },
     discountValue() {
-      this.updateResultData();
-    }
+        this.updateResultData();
+    },
   },
 }
