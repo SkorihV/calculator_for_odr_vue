@@ -7,15 +7,13 @@ export default {
       required: true
     }
   },
-  beforeUpdate() {
-    // this.updateResultData();
-  },
-  mounted() {
-  },
   data() {
     return {
       discountValue: null,
       discountType: null,
+      timeInner: 0,
+      timeOuter: 0,
+      isFirst: true,
     }
   },
   methods: {
@@ -60,9 +58,58 @@ export default {
     isHoveredOff() {
       this.$store.dispatch('updatedIsHoveredOff', this.data.id)
     },
+    computedTime() {
+
+        this.$nextTick(() => {
+          this.discoverIsFirst();
+        })
+
+        this.$nextTick(() => {
+          let timeInner = parseInt(this.data.dataCalculated.innerTime);
+          let timeOuter = parseInt(this.data.dataCalculated.outerTime);
+
+          if (!this.isFirst) {
+            timeInner = parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
+            timeOuter = parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
+          }
+
+          if (this.allLayouts.length > 1) {
+            for (let i = 1; i < this.allLayouts.length; i++) {
+              timeInner += parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
+              timeOuter += parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
+            }
+          }
+          this.timeInner = timeInner;
+          this.timeOuter = timeOuter;
+
+      })
+
+
+      //   this.$nextTick(() => {
+      //   this.discoverIsFirst();
+      //   let timeInner = parseInt(this.data.dataCalculated.innerTime);
+      //   let timeOuter = parseInt(this.data.dataCalculated.outerTime);
+      //
+      //   if (!this.isFirst) {
+      //     timeInner = parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
+      //     timeOuter = parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
+      //   }
+      //
+      //   if (this.allLayouts.length > 1) {
+      //     for (let i = 1; i < this.allLayouts.length; i++) {
+      //       timeInner += parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
+      //       timeOuter += parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
+      //     }
+      //   }
+      //   this.timeInner = timeInner;
+      //   this.timeOuter = timeOuter;
+      // });
+    },
+
+
   },
   computed: {
-    ...mapGetters(['layoutIdForShops', 'workList']),
+    ...mapGetters(['layoutIdForShops', 'workList', 'work']),
     costWorks() {
       let cost = 0;
       if (this.data.dataInner.countBlocks === 0 || this.allLayouts.length === 0 ) {
@@ -107,7 +154,7 @@ export default {
         costTotal = costTotal - (costTotal - this.costWorkInDiscount);
       }
       if (costTotal < 0 ) { costTotal = 0;}
-
+      this.computedTime();
       return costTotal;
     },
     allLayouts() {
@@ -129,24 +176,25 @@ export default {
       return layouts;
     },
     allWorksTimeInner() {
-      let timeInner = parseInt(this.data.dataCalculated.innerTime);
+          // let timeInner = parseInt(this.data.dataCalculated.innerTime);
+          //
+          // if (this.allLayouts.length > 1) {
+          //   for (let i = 1; i < this.allLayouts.length; i++) {
+          //     timeInner += parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
+          //   }
+          // }
+          return this.timeInner;
 
-      if (this.allLayouts.length > 1) {
-        for (let i = 1; i < this.allLayouts.length; i++) {
-          timeInner += parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
-        }
-      }
-      return timeInner;
     },
     allWorksTimeOut() {
-      let outerTime = parseInt(this.data.dataCalculated.outerTime);
-
-      if (this.allLayouts.length > 1) {
-        for (let i = 1; i < this.allLayouts.length; i++) {
-          outerTime += parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
-        }
-      }
-      return outerTime;
+      // let outerTime = parseInt(this.data.dataCalculated.outerTime);
+      //
+      // if (this.allLayouts.length > 1) {
+      //   for (let i = 1; i < this.allLayouts.length; i++) {
+      //     outerTime += parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
+      //   }
+      // }
+      return this.timeOuter;
     },
     blockName() {
       return this.data.dataInner.name;
@@ -159,14 +207,24 @@ export default {
     },
     typeDiscount() {
       return this.discountType;
-    }
+    },
   },
   watch: {
     costTotal() {
+      setTimeout(() => {
         this.updateResultData();
+      })
     },
     discountValue() {
+      setTimeout(() => {
         this.updateResultData();
+      })
+    },
+    isFirst() {
+      this.computedTime();
+      setTimeout(() => {
+        this.updateResultData();
+      })
     },
   },
 }

@@ -85,7 +85,7 @@ import deleteCalc from "@/UI/VueDeleteBtn";
 import VueSpoiler from "@/UI/VueSpoiler";
 import resultBlock from "@/UI/VueResultBlock";
 import personalDiscount from "@/UI/VuePersonalDiscount";
-import {mapGetters} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 import VueModal from "@/UI/VueModal";
 
 export default {
@@ -103,8 +103,16 @@ export default {
     VueModal
   },
   mixins: [MDataCalculator],
+  methods: {
+    discoverIsFirst() {
+      setTimeout(()=>{
+        let findCurrentId = this.data.result.allLayoutsData.filter( item =>  item.id === this.layoutIdForName(this.data.dataCalculated.type)[0]);
+        this.isFirst = Boolean(findCurrentId.length);
+      },0)
+    }
+  },
   computed: {
-    ...mapGetters(['layoutIdForShops']),
+    ...mapGetters(['layoutIdForName']),
     costWorks() {
       let cost = 0;
 

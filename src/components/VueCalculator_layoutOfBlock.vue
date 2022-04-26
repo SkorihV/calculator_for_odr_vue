@@ -19,14 +19,15 @@
     ></vue-input-number>
 
     <vue-checkbox
+      :calcType="data.dataCalculated.type"
       :thisId="data.dataInner.isLayoutPc.id"
       :labelText="data.dataInner.isLayoutPc.name"
       :value="data.dataInner.isLayoutPc.name"
       v-model="data.dataInner.isLayoutPc.isDone"
-
     ></vue-checkbox>
 
     <vue-checkbox
+      :calcType="data.dataCalculated.type"
       :thisId="data.dataInner.isLayoutTable.id"
       :labelText="data.dataInner.isLayoutTable.name"
       :value="data.dataInner.isLayoutPc.name"
@@ -34,6 +35,7 @@
     ></vue-checkbox>
 
     <vue-checkbox
+      :calcType="data.dataCalculated.type"
       :thisId="data.dataInner.isLayoutMobile.id"
       :labelText="data.dataInner.isLayoutMobile.name"
       :value="data.dataInner.isLayoutPc.name"
@@ -42,6 +44,7 @@
 
     <template v-for="layout in data.dataInner.extraLayouts">
       <vue-checkbox-remove
+        :calcType="data.dataCalculated.type"
         :labelText="layout.name"
         v-model="layout.isDone"
         :thisId="layout.id"
@@ -86,6 +89,7 @@ import VueSpoiler from "@/UI/VueSpoiler";
 import resultBlock from "@/UI/VueResultBlock";
 import personalDiscount from "@/UI/VuePersonalDiscount";
 import VueModal from "@/UI/VueModal";
+import {mapGetters} from "vuex";
 
 export default {
   name:'layoutOfBlock',
@@ -102,6 +106,17 @@ export default {
     VueModal
   },
   mixins: [MDataCalculator],
+  methods: {
+    discoverIsFirst() {
+      setTimeout(()=>{
+        let findCurrentId = this.data.result.allLayoutsData.filter( item =>  item.id === this.layoutIdForName(this.data.dataCalculated.type)[0]);
+        this.isFirst = Boolean(findCurrentId.length);
+      },0)
+    }
+  },
+  computed:{
+    ...mapGetters(['layoutIdForName']),
+  }
 }
 </script>
 

@@ -40,11 +40,11 @@ export default {
   },
   watch: {
     modelValue() {
-      if (this.calcType === "layoutForShop") {
+      if (this.calcType) {
         if (this.modelValue) {
-          this.$store.dispatch("uploadAddLayoutIdForShop", {nameDataArray:  'allLayoutIdForShops', layoutId: this.thisId});
+          this.$store.commit("addLayoutIdForCalcs", {nameDataArray:  this.calcType, layoutId: this.thisId});
         } else {
-          this.$store.dispatch("uploadRemoveLayoutIdForShop", {nameDataArray:  'allLayoutIdForShops', layoutId: this.thisId});
+          this.$store.commit("removeLayoutIdForCalcs", {nameDataArray:  this.calcType, layoutId: this.thisId});
         }
       }
     }
