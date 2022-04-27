@@ -5,7 +5,7 @@
         ref="select-work"
         :selectList="selectList"
         v-model:selectedSelect="selectedSelect"
-        @changeSelectOut="changedTypeWork"
+        @changeSelectOut="changedTypeAndIdWork"
       ></vue-select>
       <div v-if="currentTypeWork.length > 3" class="btn-group add__work__btn" role="group" aria-label="Basic mixed styles example">
         <button @click.stop="addWork" type="button" class="btn btn-success">Добавить работу в список</button>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import {mapState, mapGetters, mapMutations} from 'vuex';
+import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 import VueSelect from "@/components/VueSelect";
 import layoutOfBlock from "@/components/VueCalculator_layoutOfBlock";
 import titleForBusiness from "@/components/VueCalculator_layoutOfBusiness";
@@ -56,8 +56,16 @@ import resultBlock from "@/UI/VueResultBlock";
 
 export default {
   workName: 'App',
-  created() {
-    // this.dataListOut = window.staticStore.dataOut;
+  mounted() {
+    let list = window.staticStore.dataOut;
+
+    if (list.length) {
+     list = list.map(listItem => {
+       listItem.dataCalculated.id = this.getRandomId();
+      return listItem
+      })
+    }
+   this.setDatalistOut(list);
   },
   components: {
     VueSelect,
@@ -70,13 +78,22 @@ export default {
   data() {
     return {
       currentTypeWork: '',
+      currentIdWork: 0,
       selectedSelect: true,
     }
   },
   methods: {
-    ...mapMutations(['addNewWork', 'addTotalSumm', 'deleteCalc',]),
-    changedTypeWork(value) {
-      this.currentTypeWork = value;
+    ...mapMutations(['addNewWork', 'addTotalSumm', 'deleteCalc', 'setDatalistOut']),
+    ...mapActions([
+      'uploadDataListOut'
+    ]),
+    getRandomId() {
+      return Math.random();
+    },
+    changedTypeAndIdWork(data) {
+      let {id, type} = data;
+      this.currentTypeWork = type;
+      this.currentIdWork = id;
     },
     addWork() {
       if (!this.$options.components.hasOwnProperty(this.currentTypeWork)) {
@@ -86,20 +103,21 @@ export default {
       let work = null;
       let id = Math.random();
       list.forEach( item => {
-        if(item.dataCalculated.type === this.currentTypeWork) {
+        if(item.dataCalculated.type === this.currentTypeWork && item.dataCalculated.id == this.currentIdWork) {
           work = item;
           work.id = id;
           work.result = null;
         }
       })
-      this.$store.commit('addNewWork',work);
+      this.addNewWork(work);
       this.currentTypeWork = '';
+      this.currentIdWork = 0;
       this.selectedSelect = true;
     },
   },
   computed: {
     ...mapState(['dataWorksList', 'totalSumm']),
-    ...mapGetters(['listOut', 'selectList', 'workList', 'layoutIdForShops', 'allTimeInner', 'allTimeOut']),
+    ...mapGetters(['listOut', 'selectList', 'workList', 'allTimeInner', 'allTimeOut']),
     allTimeInnerCount() {
       return this.allTimeInner;
     },

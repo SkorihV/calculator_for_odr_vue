@@ -6,7 +6,7 @@ import getters from "@/vuex/getters/getters";
 export default createStore({
   state: {
     dataWorksList:  [],
-    dataListOut:    window.staticStore.dataOut,
+    dataListOut:    [],
     totalSumm:      0,
     globalArraysFormLayoutModules: {},
     globalStateFromUpdatedModules: {}

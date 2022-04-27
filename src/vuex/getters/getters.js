@@ -1,18 +1,27 @@
 export default {
   listOut(state) {
-    return state.dataListOut;
+    return state.dataListOut ?? [];
   },
   selectList(state, getters) {
-    return getters.listOut.map(item => {
-      return {
-        workName: item.dataCalculated.workName,
-        prompt:   item.dataCalculated.prompt,
-        type:     item.dataCalculated.type
-      }
-    });
+
+    if (getters.listOut.length) {
+      return getters.listOut.map(item => {
+        return {
+          workName: item.dataCalculated.workName,
+          prompt:   item.dataCalculated.prompt,
+          type:     item.dataCalculated.type,
+          id:       item.dataCalculated.id,
+        }
+      });
+    } else {
+      return [];
+    }
+
   },
   workList(state) {
-    return state.dataWorksList;
+    return state.dataWorksList.sort((a,b) => {
+      return a.dataCalculated.workName.localeCompare(b.dataCalculated.workName);
+    })
   },
   work: state => Id => {
     return state.dataWorksList.find(work => work.id === Id);

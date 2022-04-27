@@ -1,5 +1,9 @@
 export default {
-  addNewWork: (state,work) => {
+  setDatalistOut: (state, list) => {
+    state.dataListOut = list;
+  },
+  addNewWork: (state, work) => {
+
     work.isHovered = false;
     work.result = {
       costWorkInDiscountData: 0,
@@ -102,5 +106,5 @@ export default {
   },
   switchStateFromUpdateModuleOn: (state, typeName) => {
     state.globalStateFromUpdatedModules[typeName] = true;
-  }
+  },
 }

@@ -10,7 +10,7 @@
         <option :selected="selectedSelect" value="false">Работа не выбрана</option>
         <option
           v-for="(select, index) in selectList"
-          :value="select.type"
+          :value="select.type+'---'+select.id"
           :key="index"
         >{{ select.workName }}</option>
       </select>
@@ -50,7 +50,8 @@ export default {
     changeSelect(e) {
       this.$emit('update:selectedSelect', false)
       this.currentTypeWork = e.target.value;
-      this.$emit('changeSelectOut', e.target.value);
+      let [type, id] = e.target.value.split('---');
+      this.$emit('changeSelectOut', {type:type, id:id});
     },
   }
 }

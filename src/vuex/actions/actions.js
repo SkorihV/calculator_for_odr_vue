@@ -13,5 +13,8 @@ export default {
   },
   uploadRemoveLayoutIdForShop({commit}, data) {
     commit('removeLayoutIdForShops', data);
+  },
+  uploadDataListOut({commit}, list) {
+    commit('setDatalistOut',list);
   }
 }
