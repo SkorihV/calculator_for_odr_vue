@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import {mapMutations} from "vuex";
+
 export default {
   name: 'vue-checkbox',
   emits:['update:modelValue'],
@@ -33,6 +35,10 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'addLayoutIdForCalc',
+      'removeLayoutIdForCalc'
+    ]),
     checked(e) {
       this.$emit('update:modelValue', e.target.checked)
     }
@@ -41,9 +47,9 @@ export default {
     modelValue() {
       if (this.calcType) {
         if (this.modelValue) {
-          this.$store.commit("addLayoutIdForCalcs", {nameDataArray:  this.calcType, layoutId: this.thisId});
+          this.addLayoutIdForCalc({nameDataArray:  this.calcType, layoutId: this.thisId});
         } else {
-          this.$store.commit("removeLayoutIdForCalcs", {nameDataArray:  this.calcType, layoutId: this.thisId});
+          this.removeLayoutIdForCalc({nameDataArray:  this.calcType, layoutId: this.thisId});
         }
       }
     }

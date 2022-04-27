@@ -1,4 +1,4 @@
-import {mapGetters, mapState} from "vuex";
+import {mapGetters, mapMutations, mapState} from "vuex";
 
 export default {
   props: {
@@ -17,6 +17,10 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'switchStateFromUpdateModuleOff',
+      'switchStateFromUpdateModuleOn',
+    ]),
     getRandomId() {
       return Math.random();
     },
@@ -59,7 +63,6 @@ export default {
       this.$store.dispatch('updatedIsHoveredOff', this.data.id)
     },
     computedTime() {
-
         this.$nextTick(() => {
           this.discoverIsFirst();
         })
@@ -81,35 +84,25 @@ export default {
           }
           this.timeInner = timeInner;
           this.timeOuter = timeOuter;
-
       })
-
-
-      //   this.$nextTick(() => {
-      //   this.discoverIsFirst();
-      //   let timeInner = parseInt(this.data.dataCalculated.innerTime);
-      //   let timeOuter = parseInt(this.data.dataCalculated.outerTime);
-      //
-      //   if (!this.isFirst) {
-      //     timeInner = parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
-      //     timeOuter = parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
-      //   }
-      //
-      //   if (this.allLayouts.length > 1) {
-      //     for (let i = 1; i < this.allLayouts.length; i++) {
-      //       timeInner += parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
-      //       timeOuter += parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
-      //     }
-      //   }
-      //   this.timeInner = timeInner;
-      //   this.timeOuter = timeOuter;
-      // });
     },
+    discoverIsFirst() {
+      setTimeout(() => {
+        let lastIsFirst = this.isFirst;
+        let findCurrentId = this.data.result.allLayoutsData.filter( item =>  item.id === this.layoutIdForNameType(this.data.dataCalculated.type)[0]);
+        this.isFirst = Boolean(findCurrentId.length);
 
-
+        if ((!lastIsFirst && this.isFirst) || (lastIsFirst && !this.isFirst)) {
+          this.switchStateFromUpdateModuleOn(this.data.dataCalculated.type);
+          setTimeout(() => {
+            this.switchStateFromUpdateModuleOff(this.data.dataCalculated.type);
+          }, 100)
+        }
+      },0)
+    },
   },
   computed: {
-    ...mapGetters(['layoutIdForShops', 'workList', 'work']),
+    ...mapGetters(['workList', 'work', 'stateUpdateFromNameType', 'layoutIdForNameType']),
     costWorks() {
       let cost = 0;
       if (this.data.dataInner.countBlocks === 0 || this.allLayouts.length === 0 ) {
@@ -176,24 +169,9 @@ export default {
       return layouts;
     },
     allWorksTimeInner() {
-          // let timeInner = parseInt(this.data.dataCalculated.innerTime);
-          //
-          // if (this.allLayouts.length > 1) {
-          //   for (let i = 1; i < this.allLayouts.length; i++) {
-          //     timeInner += parseInt(this.data.dataCalculated.innerTimeForExtraLayout);
-          //   }
-          // }
-          return this.timeInner;
-
+        return this.timeInner;
     },
     allWorksTimeOut() {
-      // let outerTime = parseInt(this.data.dataCalculated.outerTime);
-      //
-      // if (this.allLayouts.length > 1) {
-      //   for (let i = 1; i < this.allLayouts.length; i++) {
-      //     outerTime += parseInt(this.data.dataCalculated.outerTimeForExtraLayout);
-      //   }
-      // }
       return this.timeOuter;
     },
     blockName() {
@@ -208,6 +186,9 @@ export default {
     typeDiscount() {
       return this.discountType;
     },
+    updateData() {
+      return this.stateUpdateFromNameType(this.data.dataCalculated.type);
+    }
   },
   watch: {
     costTotal() {
@@ -226,5 +207,11 @@ export default {
         this.updateResultData();
       })
     },
+    updateData() {
+      this.computedTime();
+      setTimeout(() => {
+        this.updateResultData();
+      })
+    }
   },
 }

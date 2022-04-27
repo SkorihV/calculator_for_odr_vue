@@ -104,16 +104,7 @@ export default {
     VueModal
   },
   mixins: [MDataCalculator],
-  methods: {
-    discoverIsFirst() {
-      setTimeout(()=>{
-        let findCurrentId = this.data.result.allLayoutsData.filter( item =>  item.id === this.layoutIdForName(this.data.dataCalculated.type)[0]);
-        this.isFirst = Boolean(findCurrentId.length);
-      },0)
-    }
-  },
   computed: {
-    ...mapGetters(['layoutIdForName']),
     costWorks() {
       let cost = parseFloat(this.data.dataCalculated.nominalCost);
 
@@ -134,7 +125,7 @@ export default {
       }
       return cost;
     },
-  }
+  },
 }
 </script>
 
