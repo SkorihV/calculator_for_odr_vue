@@ -20,6 +20,7 @@ export default {
     ...mapMutations([
       'switchStateFromUpdateModuleOff',
       'switchStateFromUpdateModuleOn',
+      'removeLayoutIdForCalc'
     ]),
     getRandomId() {
       return Math.random();
@@ -37,8 +38,15 @@ export default {
       }
     },
     removeLayoutData(id) {
+      this.removeLayoutIdForCalc({nameDataArray:this.data.dataCalculated.type, layoutId: id});
       this.data.dataInner.extraLayouts = this.data.dataInner.extraLayouts.filter(item => {
         return item.id !== id;
+      })
+    },
+    removeAllLayoutInData() {
+      this.allLayouts.forEach(layout => {
+        this.removeLayoutIdForCalc({nameDataArray:this.data.dataCalculated.type, layoutId: layout.id});
+
       })
     },
     updateResultData() {
@@ -105,6 +113,7 @@ export default {
     ...mapGetters(['workList', 'work', 'stateUpdateFromNameType', 'layoutIdForNameType']),
     costWorks() {
       let cost = 0;
+      let minimalExtraWork = this.data.dataCalculated.minimalExtraWork ?? 0;
       if (this.data.dataInner.countBlocks === 0 || this.allLayouts.length === 0 ) {
         cost = 0
         return cost;
@@ -119,8 +128,8 @@ export default {
         }
       }
 
-      if (this.countBlocks > 1) {
-        for (let i = 1; i < this.countBlocks; i++) {
+      if (this.countBlocks > minimalExtraWork) {
+        for (let i = minimalExtraWork; i < this.countBlocks; i++) {
           cost += parseFloat(this.data.dataCalculated.extraBlockCost);
         }
       }
@@ -212,6 +221,6 @@ export default {
       setTimeout(() => {
         this.updateResultData();
       })
-    }
+    },
   },
 }

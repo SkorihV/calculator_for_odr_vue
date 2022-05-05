@@ -16,6 +16,7 @@
     <vue-input-number
       :title="data.dataCalculated.extraWorkName"
       :calcId="data.id"
+      :minimalExtraWork="data.dataCalculated.minimalExtraWork"
     ></vue-input-number>
 
     <vue-checkbox
@@ -73,7 +74,10 @@
       ></result-block>
     </vue-spoiler>
 
-    <delete-calc :calcId="this.data.id"></delete-calc>
+    <delete-calc
+      :calcId="this.data.id"
+      @click="removeAllLayoutInData"
+    ></delete-calc>
   </div>
   </keep-alive>
 </template>

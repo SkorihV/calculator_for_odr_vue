@@ -1,6 +1,7 @@
 <template>
   <div  class="result__block mb-2" :class="{isHover: isHovered}" v-if="dataValue.costWorkTotalData > 0">
-    <h4>{{mainTitle}}</h4>
+    <h2 class="m-size-h2" v-if="workName">{{workName}}</h2>
+    <h3 class="m-size-h3" v-if="mainTitle">{{mainTitle}}</h3>
     <div class="text__block">
       <div class="m-size" v-if="(dataValue.countWorksData) && extraWorkName.length > 0">{{extraWorkName}} {{dataValue.countWorksData}}</div>
       <div class="m-size pt-1 pb-2 " v-if="dataValue.allLayoutsData.length > 0">
@@ -43,6 +44,10 @@ export default {
       type: Object,
       require: true
     },
+    workName: {
+      type: String,
+      default: ''
+    },
     mainTitle: {
       type: String,
       default: ''
@@ -54,7 +59,7 @@ export default {
     extraWorkName: {
       type: String,
       default: ''
-    }
+    },
   },
 }
 </script>
@@ -62,6 +67,12 @@ export default {
 <style scoped>
   .m-size {
     font-size: 0.8rem;
+  }
+  .m-size-h3 {
+    font-size: 1rem;
+  }
+  .m-size-h2 {
+    font-size: 1.3rem;
   }
   .result__block {
     border-bottom: 1px solid black;

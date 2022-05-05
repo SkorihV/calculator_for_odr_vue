@@ -31,6 +31,13 @@ export default {
     },
     title: [String, Number],
     calcId: [Number],
+    minimalExtraWork: {
+      type: [String, Number],
+      default: 0,
+    }
+  },
+  mounted() {
+    this.value = this.minimalExtraWork;
   },
   data() {
     return {

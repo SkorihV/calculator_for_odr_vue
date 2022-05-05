@@ -70,7 +70,10 @@
       ></result-block>
     </vue-spoiler>
 
-    <delete-calc :calcId="this.data.id"></delete-calc>
+    <delete-calc
+      :calcId="this.data.id"
+      @click="removeAllLayoutInData"
+    ></delete-calc>
   </div>
   </keep-alive>
 </template>
@@ -105,12 +108,10 @@ export default {
   mixins: [MDataCalculator],
   computed: {
     costWorks() {
-      let cost = 0;
+      let cost = parseFloat(this.data.dataCalculated.nominalCost);
 
-      if (this.allLayouts.length === 1) {
-        cost += parseFloat(this.data.dataCalculated.nominalCost);
-      } else if (this.allLayouts.length > 1) {
-        for (let i = 1; i <= this.allLayouts.length; i++) {
+      if (this.allLayouts.length > 1) {
+        for (let i = 1; i < this.allLayouts.length; i++) {
           cost += parseFloat(this.data.dataCalculated.extraLayoutCost);
         }
       }

@@ -1,5 +1,6 @@
 <template>
   <div class="app__wrapper p-5">
+    <h3>Оценка стоимости и сроков макетирования допработ:</h3>
     <div class="control__block">
       <vue-select
         ref="select-work"
@@ -29,6 +30,7 @@
           <template v-for="data in workList" :key="data.id">
             <result-block
               :extraWorkName="data.dataCalculated.extraWorkName"
+              :workName="data.dataCalculated.workName"
               :isHovered="data.isHovered"
               v-if="data.result !== null"
               :dataValue="data.result"

@@ -5,7 +5,7 @@
       class="form-control"
       type="text"
       @keyup.enter="returnValue"
-      placeholder="Название макета"
+      placeholder="Добавить макет"
     >
     <button
       type="button"

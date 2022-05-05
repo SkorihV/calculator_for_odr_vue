@@ -16,6 +16,7 @@
     <vue-input-number
       :calcId="data.id"
       :title="data.dataCalculated.extraWorkName"
+      :minimalExtraWork="data.dataCalculated.minimalExtraWork"
     ></vue-input-number>
 
     <vue-checkbox
@@ -71,7 +72,10 @@
       ></result-block>
     </vue-spoiler>
 
-    <delete-calc :calcId="this.data.id"></delete-calc>
+    <delete-calc
+      :calcId="this.data.id"
+      @click="removeAllLayoutInData"
+    ></delete-calc>
   </div>
     </keep-alive>
 </template>
@@ -107,6 +111,8 @@ export default {
   computed: {
     costWorks() {
       let cost = parseFloat(this.data.dataCalculated.nominalCost);
+      let minimalExtraWork = this.data.dataCalculated.minimalExtraWork ?? 0;
+
 
       if (this.allLayouts.length > 1 ) {
         for (let i = 1; i < this.allLayouts.length; i++) {
@@ -114,8 +120,8 @@ export default {
         }
       }
 
-      if (this.countBlocks > 0) {
-        for (let i = 0; i < this.data.dataInner.countBlocks; i++) {
+      if (this.countBlocks > minimalExtraWork) {
+        for (let i = minimalExtraWork; i < this.data.dataInner.countBlocks; i++) {
           cost += parseFloat(this.data.dataCalculated.extraBlockCost);
         }
       }

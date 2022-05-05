@@ -99,6 +99,10 @@ export default {
     state.globalArraysFormLayoutModules[nameDataArray] = state.globalArraysFormLayoutModules[nameDataArray].filter(layout => {
       return layout !== layoutId;
     })
+
+    if (state.globalArraysFormLayoutModules[nameDataArray].length === 0) {
+
+    }
   },
   switchStateFromUpdateModuleOff: (state, typeName) => {
 
